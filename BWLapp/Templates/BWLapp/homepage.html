@@ -1,0 +1,179 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'BWLapp/css/homepage.css' %}">
+</head>
+<body>
+    <div class="page-container">
+        <header class="header">
+            <a href="#" class="logo">
+                <img src="{% static 'images/logo.jpg' %}" alt="Company Logo">
+            </a>
+            <nav class="navbar">
+                <a href="#" class="nav-item">Home</a>
+                <a href="#" class="nav-item">Contact</a>
+                <a href="#" class="nav-item">About Us</a>
+                <a href="#" class="nav-item">View Items</a>
+            </nav>
+            <a href="{% url 'auth' %}" class="login-form-indicator">Admin Panel</a>
+        </header>
+
+        <main class="main-content">
+            <section class="hero-banner-section">
+                <div class="hero-banner-container">
+                    <div class="image-carousel">
+                        <div class="carousel-slides">
+                            <img src="{% static 'images/home_1.jpg' %}" alt="Bougainville Culture" class="carousel-slide active">
+                            <img src="{% static 'images/home_2.jpg' %}" alt="Bougainville Scenery" class="carousel-slide">
+                            <img src="{% static 'images/home_3.jpg' %}" alt="Bougainville Business" class="carousel-slide">
+                        </div>
+                        <button class="carousel-control prev" aria-label="Previous slide"><i class="fas fa-chevron-left"></i></button>
+                        <button class="carousel-control next" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>
+                        <div class="carousel-indicators">
+                            <span class="indicator active" data-slide-index="0"></span>
+                            <span class="indicator" data-slide-index="1"></span>
+                            <span class="indicator" data-slide-index="2"></span>
+                        </div>
+                    </div>
+                    <div class="hero-overlay-content">
+                        <p class="overlay-text">Happy Independence Anniversary</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="content-below-carousel">
+                <section class="info-grid-section">
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <i class="fas fa-chart-line"></i>
+                            <h3>Performance Metrics</h3>
+                            <p>Track your sales, stock levels, and revenue with our easy-to-use dashboard.  </p>
+                        </div>
+                        <div class="info-card">
+                            <i class="fas fa-boxes"></i>
+                            <h3>Inventory Management</h3>
+                            <p>Efficiently manage your stock with real-time updates and low-stock alerts.</p>
+                        </div>
+                        <div class="info-card">
+                            <i class="fas fa-users"></i>
+                            <h3>Customer Relations</h3>
+                            <p>Build and maintain strong relationships with your clients through our integrated tools.</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="cta-section">
+                    <h2>Ready to grow your business?</h2>
+                    <p>Partner with Bougainville Wholesale Limited and get access to a curated selection of products at competitive prices.</p>
+                    <a href="{% url 'auth' %}" class="cta-button">Apply Now</a>
+                </section>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-section company-info">
+                    <h3>Bougainville Wholesale Limited</h3>
+                    <p>Your Trusted Wholesale Partner in Bougainville</p>
+                    <p>Buka, Bougainville, Papua New Guinea</p>
+                    <p>Email: info@bougwholesale.com</p>
+                    <p>Phone: +675 1234 5678</p>
+                </div>
+                <div class="footer-section quick-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Products</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Login</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section policies">
+                    <h4>Policies</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section social-media">
+                    <h4>Follow Us</h4>
+                    <a href="#">Facebook</a> | 
+                    <a href="#">Instagram</a> | 
+                    <a href="#">LinkedIn</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 Bougainville Wholesale Limited. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.carousel-slide');
+            const indicators = document.querySelectorAll('.carousel-indicators .indicator');
+            const prevButton = document.querySelector('.carousel-control.prev');
+            const nextButton = document.querySelector('.carousel-control.next');
+            let currentSlide = 0;
+            let autoPlayInterval;
+
+            function showSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+                slides[index].classList.add('active');
+                indicators[index].classList.add('active');
+                currentSlide = index;
+            }
+
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }
+
+            function prevSlide() {
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                showSlide(currentSlide);
+            }
+
+            function startAutoPlay() {
+                autoPlayInterval = setInterval(nextSlide, 5000); // 5-second slide duration
+            }
+
+            function stopAutoPlay() {
+                clearInterval(autoPlayInterval);
+            }
+
+            nextButton.addEventListener('click', () => {
+                stopAutoPlay();
+                nextSlide();
+                startAutoPlay();
+            });
+
+            prevButton.addEventListener('click', () => {
+                stopAutoPlay();
+                prevSlide();
+                startAutoPlay();
+            });
+
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    stopAutoPlay();
+                    showSlide(index);
+                    startAutoPlay();
+                });
+            });
+
+            showSlide(currentSlide);
+            startAutoPlay();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+/* General Body and Container Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f9;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.form-container {
+    max-width: 600px;
+    width: 100%;
+    margin: auto;
+}
+
+/* Card and Title Styling */
+.form-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+.form-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+/* Form Fields Styling */
+.form-fields p {
+    margin-bottom: 15px;
+}
+
+.form-fields label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-fields input,
+.form-fields select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.form-fields input:focus,
+.form-fields select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Action Buttons */
+.form-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+    text-align: center;
+}
+
+.button-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.button-primary:hover {
+    background-color: #0056b3;
+}
+
+.button-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.button-secondary:hover {
+    background-color: #5a6268;
+}

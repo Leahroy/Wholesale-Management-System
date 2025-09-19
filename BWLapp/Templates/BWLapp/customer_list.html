@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Customers</title>
+    <link rel="stylesheet" href="{% static 'BWLapp/css/customer_list.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Customer List</h1>
+        <a href="{% url 'customer-create' %}" class="add-customer-link">
+            <i class="fas fa-plus"></i> Add New Customer
+        </a>
+    </div>
+    <div class="table-wrapper">
+        <table class="customer-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                <tr>
+                    <td>{{ customer.name }}</td>
+                    <td>{{ customer.email }}</td>
+                    <td>{{ customer.phone }}</td>
+                    <td>{{ customer.address|default:"-" }}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="{% url 'customer-update' customer.pk %}" class="edit-btn">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="{% url 'customer-delete' customer.pk %}" class="delete-btn">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="no-customers-found">No customers found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

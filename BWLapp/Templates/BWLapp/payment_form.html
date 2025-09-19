@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if form.instance.pk %}Edit Payment{% else %}Add Payment{% endif %}</title>
+    <link rel="stylesheet" href="{% static 'BWLapp/css/payment_form.css' %}">
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-card">
+            <h1 class="form-title">{% if form.instance.pk %}Edit Payment{% else %}Add Payment{% endif %}</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-fields">
+                    {{ form.as_p }}
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="button button-primary">Save</button>
+                    <a href="{% url 'payment-list' %}" class="button button-secondary">Back to Payments</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

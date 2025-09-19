@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="{% static 'BWLapp/css/register.css' %}">
+</head>
+<body>
+    <div class="container-wrapper">
+        <div class="register-card">
+            <h3>Register</h3>
+            
+            <form method="POST" novalidate>
+                {% csrf_token %}
+                
+                <!-- Username Field -->
+                <div class="form-group">
+                    <label for="id_username">Username</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        <div class="text-danger">{{ form.username.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Password Field -->
+                <div class="form-group">
+                    <label for="id_password1">Password</label>
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}
+                        <div class="text-danger">{{ form.password1.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="form-group">
+                    <label for="id_password2">Confirm Password</label>
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                        <div class="text-danger">{{ form.password2.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn-primary">Register</button>
+            </form>
+            
+            <p class="login-link-container">
+                Already have an account? 
+                <a href="{% url 'login' %}">Login</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

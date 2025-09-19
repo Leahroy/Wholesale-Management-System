@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment List</title>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'BWLapp/css/payment_list.css' %}">
+</head>
+<body>
+<div class="container">
+    <h1>Payments</h1>
+
+    <!-- Add New Payment Button -->
+    <div class="add-payment-link-wrapper">
+        <a href="{% url 'payment-create' %}" class="add-payment-link">Add Payment</a>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="payment-table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Payment Date</th>
+                    <th>Total Amount</th>
+                    <th>Method</th>
+                    <th>Processed By</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                <tr>
+                    <td>{{ payment.order.pk }}</td>
+                    <td>{{ payment.payment_date }}</td>
+                    <td>K{{ payment.total_amount }}</td>
+                    <td>{{ payment.method }}</td>
+                    <td>{{ payment.processed_by.username }}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="{% url 'payment-update' payment.pk %}" class="edit-btn">Edit</a>
+                            <a href="{% url 'payment-delete' payment.pk %}" class="delete-btn">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="no-payments-found">No payments found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Delete Payment</title>
+    <style>
+        /* General Body and Container Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f9;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .delete-container {
+            max-width: 500px;
+            width: 100%;
+            margin: auto;
+            text-align: center;
+        }
+
+        /* Card Styling */
+        .delete-card {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .card-header-danger {
+            background-color: #dc3545;
+            color: white;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .card-header-danger h2 {
+            margin: 0;
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        p {
+            color: #6c757d;
+            font-size: 1.1em;
+            margin-bottom: 25px;
+        }
+
+        strong {
+            color: #333;
+        }
+
+        /* Action Buttons */
+        .form-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s;
+            font-size: 1em;
+            text-align: center;
+        }
+
+        .button-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .button-danger:hover {
+            background-color: #c82333;
+        }
+
+        .button-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .button-secondary:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="delete-container">
+        <div class="delete-card">
+            <div class="card-header-danger">
+                <h2>Delete Payment</h2>
+            </div>
+            <div class="card-body">
+                <p>Are you sure you want to delete Payment ID <strong>{{ object.payment_id }}</strong>?</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-actions">
+                        <button type="submit" class="button button-danger">Yes, Delete</button>
+                        <a href="{% url 'payment-list' %}" class="button button-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Dashboard</title>
+    
+    <link rel="stylesheet" href="{% static 'BWLapp/css/employee_dashboard.css' %}">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>User Profile</h2>
+        <ul>
+            <li><a href="{% url 'employee_dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'customer-create' %}">Add Customer</a></li>
+            <li><a href="{% url 'order-create' %}">Create Order</a></li>
+            <li><a href="{% url 'payment-create' %}">Add Payment</a></li>
+            <!-- Optional links -->
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>Welcome, {{ user.username }}</h1>
+
+        <!-- Overview Cards -->
+        <div class="overview-cards">
+            <div class="card">Total Customers: {{ total_customers }}</div>
+            <div class="card">Total Orders: {{ total_orders }}</div>
+            <div class="card">Total Payments: {{ total_payments }}</div>
+            <div class="card">Pending Orders: {{ pending_orders }}</div>
+        </div>
+
+        <!-- Recent Activity Table -->
+        <div class="recent-activity">
+            <h2>Recent Activity</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Details</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for activity in recent_activities %}
+                        <tr>
+                            <td>{{ activity.action }}</td>
+                            <td>{{ activity.details }}</td>
+                            <td>{{ activity.date }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="3">No recent activity.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.report-table th, .report-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.report-table th {
+    background-color: #f2f2f2;
+    font-weight: 600;
+}
+
+@media print {
+    body { background-color: #fff; }
+    .sidebar, .main-header, .print-btn { display: none; }
+    .main-content { margin-left: 0; }
+    .reports-container { width: 100%; margin: 0; padding: 0; }
+    .reports-container .report-section {
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 20px;
+        page-break-inside: avoid;
+    }
+    .financial-summary { display: flex; justify-content: space-around; }
+}

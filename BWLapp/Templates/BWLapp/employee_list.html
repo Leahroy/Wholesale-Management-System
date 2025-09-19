@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="{% static 'BWLapp/css/employee_list.css' %}">
+</head>
+<body>
+<div class="container">
+    <h1>Employee List</h1>
+
+    <a href="{% url 'employee-create' %}" class="add-employee-link">Add New Employee</a>
+
+    <div class="table-wrapper">
+        <table class="employee-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employee in employees %}
+                    <tr>
+                        <td>{{ employee.employee_id }}</td>
+                        <td>{{ employee.name }}</td>
+                        <td>{{ employee.email }}</td>
+                        <td>{{ employee.phone }}</td>
+                        <td>{{ employee.address }}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <a href="{% url 'employee-update' employee.pk %}" class="edit-btn">Edit</a>
+                                <a href="{% url 'employee-delete' employee.pk %}" class="delete-btn">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" class="no-employees-found">No employees found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

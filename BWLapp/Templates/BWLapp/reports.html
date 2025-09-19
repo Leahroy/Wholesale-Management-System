@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="{% static 'BWLapp/css/admin_dashboard.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'BWLapp/css/reports.css' %}">
+
+</head>
+<body>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="profile-container">
+                <img src="{% static 'images/profile.jpg' %}" alt="Profile Picture" class="profile-image">
+                <div class="profile-details">
+                    <h2 class="profile-name">Admin User</h2>
+                    <p class="profile-role">Admin</p>
+                </div>
+            </div>
+            <ul>
+                <li><a href="{% url 'admin_dashboard' %}"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li class="active"><a href="{% url 'reports' %}"><i class="fas fa-chart-line"></i> Reports</a></li>
+            </ul>
+        </nav>
+        
+        <div class="main-content">
+            <header class="main-header">
+                <div class="header-spacer"></div>
+                <div class="logo-section">
+                    <img src="{% static 'images/logo.jpg' %}" alt="Company Logo" class="company-logo">
+                </div>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search..." class="search-input">
+                </div>
+            </header>
+            
+            <div class="reports-container">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h1>Reports</h1>
+                    <button onclick="window.print()" class="print-btn" style="padding: 10px 20px; border: none; background-color: #5514B4; color: white; cursor: pointer; border-radius: 5px;">
+                        <i class="fas fa-print"></i> Print / Download PDF
+                    </button>
+                </div>
+
+                <section class="report-section">
+                    <h2>Payment Methods</h2>
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for method in payment_methods %}
+                            <tr>
+                                <td>{{ method.method }}</td>
+                                <td>{{ method.count }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="2">No payment data available.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+                
+                <section class="report-section">
+                    <h2>Sales Over Time</h2>
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Total Sales</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for sale in sales_over_time %}
+                            <tr>
+                                <td>{{ sale.date|date:"Y-m-d" }}</td>
+                                <td>K{{ sale.total_sales|floatformat:2 }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="2">No sales data available over time.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+
+                <section class="report-section">
+                    <h2>Fast-Moving Products</h2>
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Units Sold</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in fast_moving_products %}
+                            <tr>
+                                <td>{{ product.product__name }}</td>
+                                <td>{{ product.total_quantity_sold }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="2">No sales data available.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+                
+                <section class="report-section">
+                    <h2>Slow-Moving Products</h2>
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Units Sold</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in slow_moving_products_data %}
+                            <tr>
+                                <td>{{ product.product__name }}</td>
+                                <td>{{ product.total_quantity_sold }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="2">No sales data available.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+                
+                <section class="report-section">
+                    <h2>Low-Stock Products</h2>
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Current Stock</th>
+                                <th>Threshold</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in low_stock_products %}
+                            <tr>
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.stock_quantity }}</td>
+                                <td>{{ product.low_stock_threshold }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3">No products are currently low in stock.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+                
+                <section class="report-section">
+    <h2>Top 5 Customers</h2>
+    <table class="report-table">
+        <thead>
+            <tr>
+                <th>Customer Name</th>
+                <th>Total Spent</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in top_customers %}
+            <tr>
+                <td>{{ customer.name }}</td>
+                <td>K{{ customer.total_spent|floatformat:2 }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">No customer data available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

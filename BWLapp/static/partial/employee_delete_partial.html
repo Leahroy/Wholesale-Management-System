@@ -1,0 +1,10 @@
+<div class="delete-container">
+    <h1>Delete Employee</h1>
+    <p>Are you sure you want to delete <strong>{{ employee.name }}</strong>?</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-delete">🗑️ Yes, Delete</button>
+        <button type="button" class="btn btn-cancel cancel-btn">❌ Cancel</button>
+    </form>
+</div>

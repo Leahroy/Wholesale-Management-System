@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Products</title>
+    <link rel="stylesheet" href="{% static 'BWLapp/css/product_list.css' %}">
+</head>
+<body>
+<div class="container">
+    <h1>Product List</h1>
+    <a href="{% url 'product-create' %}" class="add-product-link">Add New Product</a>
+    <div class="table-wrapper">
+        <table class="product-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Quantity in Stock</th>
+                    <th>Available</th>
+                    <th>Packaging</th>
+                    <th>Action</th>
+                  
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.description|default:"-" }}</td>
+                    <td>K{{ product.price }}</td>
+                    <td>{{ product.stock_quantity}}</td>
+                    <td>{{ product.is_available|yesno:"Yes,No" }}</td>
+                    <td>{{ product.get_packaging_display }}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="{% url 'product-update' product.pk %}" class="edit-btn">Edit</a>
+                            <a href="{% url 'product-delete' product.pk %}" class="delete-btn">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="no-products-found">No products found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

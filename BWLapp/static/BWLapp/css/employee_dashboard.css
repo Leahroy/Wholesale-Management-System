@@ -1,0 +1,151 @@
+/* Reset & basic styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    background-color: #f4f4f4;
+
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    background-color: #2f70a5;
+    color: white;
+    min-height: 100vh;
+    padding: 20px;
+    flex-shrink: 0;
+}
+
+.sidebar h2 {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 15px;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.sidebar ul li a:hover {
+    background-color: #2f70a5;
+}
+
+/* Main content */
+.main-content {
+    flex: 1;
+    padding: 30px;
+    min-width: 0; /* allow shrinking */
+}
+
+.main-content h1 {
+    margin-bottom: 20px;
+}
+
+/* Overview Cards */
+.overview-cards {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.overview-cards .card {
+    background-color: white;
+    flex: 1 1 200px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/* Recent Activity Table */
+.recent-activity table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.recent-activity th, .recent-activity td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    font-size: 13px;
+}
+
+.recent-activity th {
+    background-color: #3498db;
+    color: white;
+}
+
+.recent-activity tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+    .overview-cards .card {
+        flex: 1 1 150px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        min-height: auto;
+        display: flex;
+        overflow-x: auto;
+        padding: 10px;
+    }
+
+    .sidebar ul {
+        display: flex;
+        flex-direction: row;
+        margin: 0;
+        padding: 0;
+    }
+
+    .sidebar ul li {
+        margin-right: 10px;
+        margin-bottom: 0;
+    }
+
+    .main-content {
+        padding: 15px;
+    }
+
+    .overview-cards {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .recent-activity th, .recent-activity td {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .recent-activity table {
+        display: block;
+        overflow-x: auto;
+    }
+}
