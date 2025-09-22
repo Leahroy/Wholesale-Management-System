@@ -4,20 +4,29 @@ from pathlib import Path
 import os
 from decimal import Decimal
 import json
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 class CustomJSONEncoder(json.JSONEncoder):
+    """
+    JSONEncoder that converts Decimal objects to strings.
+    This is necessary because the JSON format does not have a native
+    type for decimals.
+    """
     def default(self, obj):
         if isinstance(obj, Decimal):
             return str(obj)
         return super().default(obj)
 
 # Quick-start development settings - unsuitable for production
+# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-9z_isy(@r2rdr(mzn_!5_%5lr+g#_6&r-yu732p30=g74)rb^0'
+
+# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
 ALLOWED_HOSTS = ['wholesale-management-system.onrender.com', '.']
 
 # Application definition
@@ -48,7 +57,7 @@ ROOT_URLCONF = 'my_webapp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')], # You might want a global templates dir
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -63,16 +72,27 @@ TEMPLATES = [
 WSGI_APPLICATION = 'my_webapp.wsgi.application'
 
 # Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bwl_db',
-        'USER': 'postgres',
-        'HOST': 'localhost',
-        'PASSWORD': 'mypassword@123',
-        'PORT': 5434,
+if os.environ.get('DATABASE_URL'):
+    # Use dj-database-url to parse the connection string from Render
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600
+        )
     }
-}
+else:
+    # Fallback for local development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'bwl_db',
+            'USER': 'postgres',
+            'HOST': 'localhost',
+            'PASSWORD': 'mypassword@123',
+            'PORT': 5434,
+        }
+    }
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -99,7 +119,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = []  # Corrected: Remove the redundant entry
+STATICFILES_DIRS = []
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
