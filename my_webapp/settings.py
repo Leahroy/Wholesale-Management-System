@@ -27,9 +27,7 @@ SECRET_KEY = 'django-insecure-9z_isy(@r2rdr(mzn_!5_%5lr+g#_6&r-yu732p30=g74)rb^0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['wholesale-management-system.onrender.com', '.']
-# settings.py
-
+# Consolidated and corrected ALLOWED_HOSTS
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'wholesale-management-system.onrender.com']
 
 # Application definition

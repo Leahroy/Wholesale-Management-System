@@ -136,7 +136,7 @@ def logout_view(request):
     return redirect('auth')
 
 def homepage(request):
-    return render(request, 'homepage.html')
+    return render(request, 'BWLapp/homepage.html')
 
 @login_required
 def admin_dashboard(request):
