@@ -1,0 +1,135 @@
+/*
+ * This file styles the Employee List page
+ * Updated to a cleaner, more modern design, mirroring the Customer List.
+ */
+
+:root {
+    --primary-color: #4a90e2;
+    --primary-dark: #357bd8;
+    --secondary-color: #eef2f8;
+    --card-bg: #ffffff;
+    --text-color: #333333;
+    --border-color: #e0e6ed;
+    --hover-bg: #f8f9fa;
+    --danger-color: #d9534f;
+    --success-color: #5cb85c;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--secondary-color);
+    margin: 0;
+    padding: 2.5rem 1rem;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    width: 100%;
+    margin: auto; /* Centers the container */
+    background-color: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+/* Headings and Buttons*/
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.add-employee-link { /* Changed from .add-customer-link */
+    background-image: linear-gradient(to right, #6b8bf5 0%, #4a90e2 100%);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px; /* Pill shape */
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem; /* Space between icon and text */
+}
+
+.add-employee-link:hover { /* Changed from .add-customer-link */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+    transform: translateY(-2px);
+}
+
+/* 3. Table Styles*/
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.employee-table { /* Changed from .customer-table */
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.employee-table thead { /* Changed from .customer-table */
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.employee-table th { /* Changed from .customer-table */
+    text-align: left;
+    padding: 1rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.employee-table tbody tr { /* Changed from .customer-table */
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s ease;
+}
+
+.employee-table td { /* Changed from .customer-table */
+    padding: 1rem;
+    vertical-align: middle;
+    font-size: 0.9375rem;
+}
+
+.employee-table tbody tr:hover { /* Changed from .customer-table */
+    background-color: var(--hover-bg);
+}
+
+.employee-table tbody tr:last-child { /* Changed from .customer-table */
+    border-bottom: none;
+}
+
+.employee-table tbody tr:nth-child(even) { /* Added for alternating rows */
+    background-color: var(--secondary-color);
+}
+
+
+/* 4. Action Buttons in Table*/
+.action-buttons {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.edit-btn, .delete-btn {
+    /* Removed specific text padding here since buttons are icon-only now */
+    padding: 0.5rem; /* Square padding for icon buttons */
+    border-radius: 6px;
+    font-size: 1rem; /* Adjust icon size */
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: none;
+}

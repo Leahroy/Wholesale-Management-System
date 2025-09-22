@@ -1,0 +1,180 @@
+/*
+ * This file styles the Customer List page
+ * Updated to a cleaner, more modern design.
+ */
+
+:root {
+    --primary-color: #4a90e2;
+    --primary-dark: #357bd8;
+    --secondary-color: #eef2f8;
+    --card-bg: #ffffff;
+    --text-color: #333333;
+    --border-color: #e0e6ed;
+    --hover-bg: #f8f9fa;
+    --danger-color: #d9534f;
+    --success-color: #5cb85c;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--secondary-color);
+    margin: 0;
+    padding: 2.5rem 1rem;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.container {
+    max-width: 1200px;
+    width: 100%;
+    background-color: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+/* Headings and Buttons*/
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.add-customer-link {
+    background-image: linear-gradient(to right, #6b8bf5 0%, #4a90e2 100%);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px; /* Pill shape */
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.add-customer-link:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+    transform: translateY(-2px);
+}
+
+/* Table Styles*/
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.customer-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.customer-table thead {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.customer-table th {
+    text-align: left;
+    padding: 1rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.customer-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s ease;
+}
+
+.customer-table td {
+    padding: 1rem;
+    vertical-align: middle;
+    font-size: 0.9375rem;
+}
+
+.customer-table tbody tr:hover {
+    background-color: var(--hover-bg);
+}
+
+.customer-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+/* Action Buttons in Table*/
+.action-buttons {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.edit-btn, .delete-btn {
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit-btn {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.delete-btn {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.edit-btn:hover, .delete-btn:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+.no-customers-found {
+    text-align: center;
+    padding: 2rem;
+    font-style: italic;
+    color: #888;
+}
+
+/* Responsive Design*/
+@media (max-width: 768px) {
+    .container {
+        padding: 1.5rem;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header h1 {
+        margin-bottom: 1rem;
+    }
+
+    .customer-table th, .customer-table td {
+        padding: 0.75rem;
+    }
+}

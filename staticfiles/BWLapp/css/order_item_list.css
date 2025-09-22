@@ -1,0 +1,146 @@
+/*
+  This file styles the Order Item List page
+*/
+
+:root {
+    --primary-color: #3d97eb;
+    --secondary-color: #f0f2f5;
+    --card-bg: #ffffff;
+    --text-color: #495057;
+    --border-color: #dee2e6;
+    --hover-bg: #f8f9fa;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--secondary-color);
+    margin: 0;
+    padding: 2rem;
+    color: var(--text-color);
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    background-color: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Headings and Buttons*/
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+.add-order-item-link {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.add-order-item-link:hover {
+    background-color: #398fe0;
+}
+
+/* 3. Table Styles*/
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.order-item-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.order-item-table thead {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.order-item-table th {
+    text-align: left;
+    padding: 1rem;
+    font-weight: 600;
+}
+
+.order-item-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.order-item-table td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.order-item-table tbody tr:hover {
+    background-color: var(--hover-bg);
+}
+
+.order-item-table tbody tr:nth-child(even) {
+    background-color: var(--secondary-color);
+}
+
+/* 4. Action Buttons in Table*/
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.edit-btn, .delete-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.edit-btn {
+    background-color: #ffc107; /* Warning color */
+    color: #212529;
+}
+
+.delete-btn {
+    background-color: #dc3545; /* Danger color */
+    color: white;
+}
+
+.edit-btn:hover, .delete-btn:hover {
+    transform: translateY(-2px);
+}
+
+.no-order-items-found {
+    text-align: center;
+    padding: 2rem;
+    font-style: italic;
+    color: #888;
+}
+
+/* 5. Responsive Design*/
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+    .container {
+        padding: 1.5rem;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+    .order-item-table th, .order-item-table td {
+        padding: 0.75rem;
+    }
+}

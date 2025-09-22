@@ -1,0 +1,174 @@
+/*
+ * This file styles the Order List page, now with the same styles as the Customer and Product Lists.
+ */
+
+:root {
+    --primary-color: #4a90e2;
+    --primary-dark: #357bd8;
+    --secondary-color: #eef2f8;
+    --card-bg: #ffffff;
+    --text-color: #333333;
+    --border-color: #e0e6ed;
+    --hover-bg: #f8f9fa;
+    --success-color: #5cb85c;
+    --success-dark: #4cae4c;
+    --delete-color: #dc3545;
+    --delete-dark: #c82333;
+    --edit-color: #ffc107;
+    --edit-dark: #e0a800;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--secondary-color);
+    margin: 0;
+    padding: 2rem 1rem;
+    color: var(--text-color);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 3rem auto;
+    background-color: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.create-order-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-image: linear-gradient(to right, #6b8bf5 0%, #4a90e2 100%);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.create-order-link:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    background-image: linear-gradient(to right, #5c79e6 0%, #3e81d1 100%);
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+}
+
+.order-table thead {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.order-table th {
+    text-align: left;
+    padding: 1rem;
+    font-weight: 600;
+}
+
+.order-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.order-table td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.order-table tbody tr:hover {
+    background-color: var(--hover-bg);
+}
+
+.order-table tbody tr:nth-child(even) {
+    background-color: var(--secondary-color);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.edit-btn, .delete-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+    color: white;
+}
+
+.edit-btn {
+    background-color: var(--edit-color);
+}
+
+.edit-btn:hover {
+    background-color: var(--edit-dark);
+    transform: scale(1.1);
+}
+
+.delete-btn {
+    background-color: var(--delete-color);
+}
+
+.delete-btn:hover {
+    background-color: var(--delete-dark);
+    transform: scale(1.1);
+}
+
+.no-orders-found {
+    text-align: center;
+    padding: 2rem;
+    font-style: italic;
+    color: #888;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+    .container {
+        padding: 1.5rem;
+    }
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    h1 {
+        font-size: 1.75rem;
+    }
+    .order-table th, .order-table td {
+        padding: 0.75rem;
+    }
+}
