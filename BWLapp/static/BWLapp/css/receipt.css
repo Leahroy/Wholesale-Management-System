@@ -1,0 +1,26 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+.receipt {
+    background: #fff;
+    padding: 20px;
+    border: 2px solid #000;
+    width: 300px;
+    text-align: center;
+}
+button {
+    margin-top: 15px;
+    padding: 8px 12px;
+    background: #4a90e2;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+button:hover {
+    background: #357bd8;
+}

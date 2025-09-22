@@ -12,9 +12,24 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+from decimal import Decimal
+import json
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+class CustomJSONEncoder(json.JSONEncoder):
+    """
+    JSONEncoder that converts Decimal objects to strings.
+    This is necessary because the JSON format does not have a native
+    type for decimals, and Django's admin panel often attempts to
+    serialize model data to JSON, causing a TypeError.
+    """
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            # Convert the Decimal object to a string to be JSON serializable
+            return str(obj)
+        return super().default(obj)
 
 
 # Quick-start development settings - unsuitable for production
@@ -26,7 +41,7 @@ SECRET_KEY = 'django-insecure-9z_isy(@r2rdr(mzn_!5_%5lr+g#_6&r-yu732p30=g74)rb^0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -134,3 +149,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Custom JSON encoder for DecimalField
+JSON_ENCODER = 'my_webapp.settings.CustomJSONEncoder'

@@ -44,7 +44,11 @@
                 </div>
             </form>
             <div class="back-link">
-                <a href="{% url 'admin_dashboard' %}"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+                {% if request.user.role == 'admin' %}
+                    <a href="{% url 'admin_dashboard' %}"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+                {% else %}
+                    <a href="{% url 'employee_dashboard' %}"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+                {% endif %}
             </div>
         </div>
     </div>

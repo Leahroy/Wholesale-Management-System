@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm Deletion</title>
+    <style>
+        /* General styling and layout */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f9;
+            margin: 0;
+            padding: 2rem;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        /* Card-like container for the confirmation message */
+        .delete-card {
+            background-color: #ffffff;
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        /* Title for the confirmation */
+        .delete-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #dc3545; /* Red color to emphasize deletion */
+            margin-bottom: 1.5rem;
+        }
+
+        /* Message and warning text */
+        .delete-message {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .delete-warning {
+            font-style: italic;
+            color: #888;
+            margin-bottom: 2rem;
+        }
+
+        /* Actions/buttons styling */
+        .delete-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            border: none;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        .btn-cancel {
+            background-color: #e2e8f0;
+            color: #4a5568;
+            border: 1px solid #cbd5e0;
+        }
+
+        .btn-cancel:hover {
+            background-color: #cbd5e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="delete-card">
+        <h2 class="delete-title">Confirm Deletion</h2>
+        <p class="delete-message">
+            Are you sure you want to delete the stock item for **{{ object.product.name }}**?
+        </p>
+        <p class="delete-warning">
+            This action cannot be undone.
+        </p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="delete-actions">
+                <button type="submit" class="btn btn-delete">Confirm Delete</button>
+                <a href="{% url 'stock-list' %}" class="btn btn-cancel">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

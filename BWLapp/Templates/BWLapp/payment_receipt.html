@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Receipt</title>
+    <link rel="stylesheet" href="{% static 'BWLapp/css/receipt.css' %}">
+</head>
+<body>
+    <div class="receipt">
+        <h2>BWL Wholesale</h2>
+        <p><strong>Receipt ID:</strong> {{ payment.id }}</p>
+        <p><strong>Customer:</strong> {{ payment.customer.name }}</p>
+        <p><strong>Amount:</strong> ${{ payment.amount }}</p>
+        <p><strong>Date:</strong> {{ payment.date|date:"M d, Y H:i" }}</p>
+
+        <p>Thank you for your payment!</p>
+        <button onclick="window.print()">🖨 Print Receipt</button>
+    </div>
+</body>
+</html>

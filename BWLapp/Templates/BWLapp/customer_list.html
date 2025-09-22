@@ -19,20 +19,25 @@
         <table class="customer-table">
             <thead>
                 <tr>
+                    <th>Cust_ID</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Phone</th>
                     <th>Address</th>
+                    {% if is_admin %}
                     <th>Actions</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
                 {% for customer in customers %}
                 <tr>
+                    <td>{{ customer.pk }}</td>
                     <td>{{ customer.name }}</td>
                     <td>{{ customer.email }}</td>
                     <td>{{ customer.phone }}</td>
                     <td>{{ customer.address|default:"-" }}</td>
+                    {% if is_admin %}
                     <td>
                         <div class="action-buttons">
                             <a href="{% url 'customer-update' customer.pk %}" class="edit-btn">
@@ -43,10 +48,11 @@
                             </a>
                         </div>
                     </td>
+                    {% endif %}
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="5" class="no-customers-found">No customers found.</td>
+                    <td colspan="6" class="no-customers-found">No customers found.</td>
                 </tr>
                 {% endfor %}
             </tbody>

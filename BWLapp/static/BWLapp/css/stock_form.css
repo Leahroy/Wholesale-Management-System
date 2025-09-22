@@ -1,0 +1,142 @@
+/* Styling for form groups (label + input) */
+.form-group {
+    margin-bottom: 1rem;
+}
+.form-card {
+    background-color: #ffffff;
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 400px; /* Change this value to adjust the width */
+}
+
+/* Styling for labels */
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 0.5rem;
+}
+
+/* Styling for form inputs and selects */
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #6c5ce7;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+}
+/* Styling for buttons */
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #6c5ce7;
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #5d4cd9;
+}
+
+.btn-secondary {
+    background-color: #e2e8f0;
+    color: #4a5568;
+    border: 1px solid #cbd5e0;
+}
+
+.btn-secondary:hover {
+    background-color: #cbd5e0;
+}
+/* stock_form.css */
+
+/* ... (previous styles) ... */
+
+/* Adjust the form card width */
+.form-card {
+    background-color: #ffffff;
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    /* This is the key change: Make it narrower, similar to the employee form */
+    max-width: 450px; /* Adjust this value as needed to match the visual width */
+}
+
+/* Adjust button layout in form-actions */
+.form-actions {
+    /* Align buttons to the right and add some gap */
+    display: flex;
+    justify-content: flex-end; /* Aligns items to the end (right) */
+    gap: 10px; /* Space between buttons */
+    margin-top: 2rem;
+}
+
+/* Styling for the Save button (similar to Image 1's green button) */
+.btn-success { /* Assuming you use btn-success for save */
+    background-color: #28a745; /* Bootstrap success green */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-success:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+/* Styling for the Cancel/Back button (similar to Image 1's gray button) */
+.btn-secondary { /* Assuming you use btn-secondary for cancel/back */
+    background-color: #6c757d; /* Bootstrap secondary gray */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268; /* Darker gray on hover */
+}
+
+
+/* You might also want to adjust the padding inside the form fields for consistency */
+.form-group input,
+.form-group select {
+    padding: 10px 12px; /* Slightly more padding for input fields */
+}
+
+/* If your labels are not looking correct, ensure they are also styled */
+.form-group label {
+    font-size: 1rem; /* Adjust if labels in Image 1 are different size */
+    margin-bottom: 0.4rem; /* Adjust space below labels */
+}

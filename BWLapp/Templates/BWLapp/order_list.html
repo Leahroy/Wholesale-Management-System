@@ -4,13 +4,17 @@
 <head>
     <meta charset="UTF-8" />
     <title>Orders</title>
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'BWLapp/css/order_list.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 <div class="container">
-    <h1>Order List</h1>
-    <a href="{% url 'order-create' %}" class="create-order-link">Create New Order</a>
+    <div class="header">
+        <h1>Order List</h1>
+        <a href="{% url 'order-create' %}" class="create-order-link">
+            <i class="fas fa-plus"></i> Create New Order
+        </a>
+    </div>
     <div class="table-wrapper">
         <table class="order-table">
             <thead>
@@ -19,7 +23,9 @@
                     <th>Customer</th>
                     <th>Status</th>
                     <th>Order Date</th>
+                    {% if is_admin %}
                     <th>Actions</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -29,12 +35,18 @@
                     <td>{{ order.customer.name }}</td>
                     <td>{{ order.status }}</td>
                     <td>{{ order.order_date|date:"Y-m-d H:i" }}</td>
+                    {% if is_admin %}
                     <td>
                         <div class="action-buttons">
-                            <a href="{% url 'order-update' order.pk %}" class="edit-btn">Edit</a>
-                            <a href="{% url 'order-delete' order.pk %}" class="delete-btn">Delete</a>
+                            <a href="{% url 'order-update' order.pk %}" class="edit-btn">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="{% url 'order-delete' order.pk %}" class="delete-btn">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
                         </div>
                     </td>
+                    {% endif %}
                 </tr>
                 {% empty %}
                 <tr>

@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Stock List</title>
+    <link rel="stylesheet" href="{% static 'BWLapp/css/stock_list.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Stock List</h1>
+        <a href="{% url 'stock-create' %}" class="add-stock-link">
+            <i class="fas fa-plus"></i> Add New Stock
+        </a>
+    </div>
+    <div class="table-wrapper">
+    <table class="stock-table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Package Type</th>
+                <th>Quantity</th>
+                <th>Price per Package</th>
+                <th>Total Amount</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stock in all_stocks %}
+            <tr>
+                <td>{{ stock.product.name }}</td>
+                <td>{{ stock.get_package_type_display }}</td>
+                <td>{{ stock.quantity }}</td>
+                <td>K{{ stock.price_per_package|floatformat:2 }}</td>
+                <td>K{{ stock.expected_total_amount|floatformat:2 }}</td>
+                <td>
+                    <div class="action-buttons">
+                        <a href="{% url 'stock-update' stock.pk %}" class="edit-btn">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <form method="post" action="{% url 'stock-delete' stock.pk %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="delete-btn">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="no-stocks-found">No stock items found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+</body>
+</html>
