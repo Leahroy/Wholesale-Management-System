@@ -137,7 +137,7 @@ def logout_view(request):
 
 def homepage(request):
     # This is the corrected template path to resolve the TemplateDoesNotExist error.
-    return render(request, 'homepage.html')
+    return render(request, "BWLapp/homepage.html")
 
 @login_required
 def admin_dashboard(request):
