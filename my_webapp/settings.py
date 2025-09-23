@@ -20,15 +20,15 @@ class CustomJSONEncoder(json.JSONEncoder):
             return str(obj)
         return super().default(obj)
 
-# Quick-start development settings - unsuitable for production
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9z_isy(@r2rdr(mzn_!5_%5lr+g#_6&r-yu732p30=g74)rb^0'
+# Use environment variable for production, fall back to a hard-coded value for local dev.
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-9z_isy(@r2rdr(mzn_!5_%5lr+g#_6&r-yu732p30=g74)rb^0')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 # Consolidated and corrected ALLOWED_HOSTS
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'wholesale-management-system.onrender.com']
+ALLOWED_HOSTS = ['172.17.23.178', '127.0.0.1', 'localhost', 'wholesale-management-system.onrender.com']
 
 # Application definition
 INSTALLED_APPS = [
@@ -74,16 +74,19 @@ TEMPLATES = [
 WSGI_APPLICATION = 'my_webapp.wsgi.application'
 
 # Database
-if os.environ.get('DATABASE_URL'):
-    # Use dj-database-url to parse the connection string from Render
+# Use dj-database-url to parse the connection string from environment variables
+# For local development, create a .env file with your DATABASE_URL.
+# For Render, the DATABASE_URL environment variable is set automatically.
+DATABASE_URL = os.environ.get('DATABASE_URL')
+if DATABASE_URL:
     DATABASES = {
         'default': dj_database_url.config(
-            default=os.environ.get('DATABASE_URL'),
+            default=DATABASE_URL,
             conn_max_age=600
         )
     }
 else:
-    # Fallback for local development
+    # Fallback for local development using hardcoded values
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -91,7 +94,7 @@ else:
             'USER': 'postgres',
             'HOST': 'localhost',
             'PASSWORD': 'mypassword@123',
-            'PORT': 5434,
+            'PORT': '5434',
         }
     }
 
