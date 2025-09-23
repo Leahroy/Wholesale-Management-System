@@ -136,27 +136,30 @@ def logout_view(request):
     return redirect('auth')
 
 def homepage(request):
-    return render(request, 'BWLapp/homepage.html')
+    # This is the corrected template path to resolve the TemplateDoesNotExist error.
+    return render(request, 'BWLapp/Templates/BWLapp/homepage.html')
 
 @login_required
 def admin_dashboard(request):
-    total_products = Product.objects.count()
+    # Fetch the data needed for the overview cards
     low_stock_threshold = 10
     
-    # CORRECTED: Find low-stock products by iterating through them and using the new property
-    low_stock_products = [
-        p for p in Product.objects.all() if p.total_stock_quantity < low_stock_threshold
-    ]
+    # Calculate total stock and filter for low stock products in a single query
+    low_stock_products = Product.objects.annotate(
+        total_stock_quantity=Sum('stock__quantity')
+    ).filter(
+        total_stock_quantity__lt=low_stock_threshold
+    )
 
-    # CORRECTED: Get total inventory value using the new property
-    total_inventory_value = sum(
-        p.total_expected_revenue for p in Product.objects.all()
-    ) or Decimal('0')
+    # Calculate total inventory value using ORM aggregation
+    total_inventory_value = Product.objects.aggregate(
+        total_expected_revenue=Sum(F('stock__quantity') * F('selling_price'))
+    )['total_expected_revenue'] or Decimal('0')
 
-    # CORRECTED: Get total stock quantity using the new property
-    total_stock_quantity = sum(
-        p.total_stock_quantity for p in Product.objects.all()
-    ) or 0
+    # Calculate total stock quantity using ORM aggregation
+    total_stock_quantity = Stock.objects.aggregate(
+        total=Sum('quantity')
+    )['total'] or 0
     
     # Monthly Sales Chart Data
     monthly_sales = Order.objects.annotate(
@@ -189,9 +192,9 @@ def admin_dashboard(request):
     all_notifications = low_stock_notifs 
     
     context = {
-        'total_products': total_products,
+        'total_products': Product.objects.count(),
         'low_stock_products': low_stock_products,
-        'low_stock_count': len(low_stock_products), # Use len() instead of a .count() method
+        'low_stock_count': low_stock_products.count(),
         'total_inventory_value': total_inventory_value,
         'total_stock_quantity': total_stock_quantity,
         'low_stock_threshold': low_stock_threshold,
@@ -587,7 +590,7 @@ def reports_view(request):
     # CORRECTED: Use 'cost_price' as the field name
     stock_valuation = Product.objects.aggregate(
         total_at_cost=Sum(F('stock_items__quantity') * F('cost_price')),
-        total_at_selling_price=Sum(F('stock_items__quantity') * F('cost_price'))
+        total_at_selling_price=Sum(F('stock_items__quantity') * F('selling_price'))
     ) or {'total_at_cost': Decimal('0'), 'total_at_selling_price': Decimal('0')}
     
     # 3. Customer Reports

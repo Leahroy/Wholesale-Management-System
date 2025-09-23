@@ -30,6 +30,7 @@ from .views import (
     StockListView, StockCreateView, StockUpdateView, StockDeleteView # Added StockListView
 )
 from django.contrib.auth import views as auth_views
+from BWLapp.views import homepage
 # Removed redundant import: from . import views
 
 urlpatterns = [
