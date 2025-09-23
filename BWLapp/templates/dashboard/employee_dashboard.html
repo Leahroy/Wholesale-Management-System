@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'BWLapp/css/employee_dashboard.css' %}">
+    <style>
+        .navigation-bar {
+            background-color: #007bff;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .navigation-bar a {
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .navigation-bar a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .footer {
+            margin-top: auto; /* Pushes footer to the bottom */
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body class='flex flex-col min-h-screen'>
+    <header class="main-header">
+        <div class="logo-section mb-8">BWLapp</div>
+
+        <div class="header-right-group">
+            <div class="search-bar">
+                <input type="text" placeholder="Search..." id="search-input" class="search-input">
+                <div id="search-results" class="search-results-dropdown"></div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="notification-container" id="notification-icon">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-count" id="notification-count">0</span>
+                    <div class="notification-dropdown" id="notification-dropdown">
+                        <h4>Notifications</h4>
+                        <ul id="notification-list">
+                            <!-- Notifications will be loaded dynamically -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="profile-dropdown-container" class="profile-container cursor-pointer">
+                <img src="{% if request.user.profile.profile_picture %}{{ request.user.profile.profile_picture.url }}{% else %}{% static 'images/profile.jpg' %}{% endif %}"
+                    alt="Profile Picture" class="profile-image w-10 h-10 rounded-full object-cover">
+                
+                <div id="profile-dropdown-menu" class="profile-dropdown-menu">
+                    <a href="{% url 'profile' %}" class="dropdown-item"><i class="fas fa-user-cog"></i> View Profile</a>
+                    <a href="#" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
+                    <a href="{% url 'logout' %}" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navigation-bar">
+        <!-- The reports link has been removed and other links are now using the Django url tag -->
+        <a href="{% url 'employee_dashboard' %}">Dashboard</a>
+        <a href="{% url 'customer-list' %}">Customers</a>
+        <a href="{% url 'product-list' %}">Products</a>
+        <a href="{% url 'order-list' %}">Orders</a>
+        <a href="{% url 'payment-list' %}">Payments</a>
+    </nav>
+
+    <div class="dashboard-container">
+        <h1>Welcome, {{ user.username }}!</h1>
+        <p class="subtitle">Employee Dashboard</p>
+
+        <section class="dashboard-cards">
+            <div class="card">
+                <i class="fas fa-users icon"></i>
+                <h2>Total Customers</h2>
+                <p>{{ total_customers }}</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-shopping-cart icon"></i>
+                <h2>Total Orders</h2>
+                <p>{{ total_orders }}</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-dollar-sign icon"></i>
+                <h2>Total Payments</h2>
+                <p>{{ total_payments }}</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-exclamation-triangle icon"></i>
+                <h2>Pending Orders</h2>
+                <p>{{ pending_orders }}</p>
+            </div>
+        </section>
+
+        <section class="recent-activity-section">
+            <div class="activity-card">
+                <h2>Recent Activities</h2>
+                <ul class="activity-list">
+                    {% for activity in recent_activities %}
+                        <li>
+                            <div class="activity-item">
+                                <span class="activity-date">{{ activity.date }}</span>
+                                <p class="activity-text">{{ activity.action }}: {{ activity.details }}</p>
+                            </div>
+                        </li>
+                    {% empty %}
+                        <li>No recent activities.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+    </div>
+    <div id="toast" class="toast"></div>
+
+    <footer class="footer">
+        &copy; 2025 BWLapp. All rights reserved.
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ================================
+            // Notification dropdown toggle
+            // ================================
+            const notificationIcon = document.getElementById('notification-icon');
+            const notificationDropdown = document.getElementById('notification-dropdown');
+
+            notificationIcon.addEventListener('click', function(event) {
+                notificationDropdown.classList.toggle('is-active');
+                event.stopPropagation();
+            });
+
+            document.addEventListener('click', function(event) {
+                if (!notificationDropdown.contains(event.target) && !notificationIcon.contains(event.target)) {
+                    notificationDropdown.classList.remove('is-active');
+                }
+            });
+
+            // ================================
+            // Fetch and render notifications + Toast
+            // ================================
+            let lastCount = 0;
+
+            function showToast(message) {
+                const toast = document.getElementById("toast");
+                toast.textContent = message;
+                toast.className = "toast show";
+                setTimeout(() => {
+                    toast.className = toast.className.replace("show", "");
+                }, 3000);
+            }
+
+            function fetchNotifications() {
+                fetch("{% url 'get_notifications' %}")
+                    .then(response => response.json())
+                    .then(data => {
+                        const notificationList = document.getElementById('notification-list');
+                        const notificationCount = document.getElementById('notification-count');
+                        notificationList.innerHTML = '';
+
+                        if (data.notifications.length > 0) {
+                            data.notifications.forEach(n => {
+                                const li = document.createElement('li');
+                                li.textContent = n.message;
+                                notificationList.appendChild(li);
+                            });
+                        } else {
+                            notificationList.innerHTML = '<li>No new notifications.</li>';
+                        }
+
+                        notificationCount.textContent = data.count;
+                        notificationCount.style.display = data.count > 0 ? 'block' : 'none';
+
+                        if (data.count > lastCount) {
+                            showToast("🔔 " + data.notifications[0].message);
+                        }
+                        lastCount = data.count;
+                    })
+                    .catch(error => console.error("Error fetching notifications:", error));
+            }
+
+            fetchNotifications();
+            setInterval(fetchNotifications, 30000);
+
+            // ================================
+            // Profile dropdown functionality
+            // ================================
+            const profileDropdownContainer = document.getElementById('profile-dropdown-container');
+            const profileDropdownMenu = document.getElementById('profile-dropdown-menu');
+
+            profileDropdownContainer.addEventListener('click', () => {
+                profileDropdownMenu.classList.toggle('is-active');
+            });
+
+            document.addEventListener('click', function(event) {
+                if (!profileDropdownMenu.contains(event.target) && !profileDropdownContainer.contains(event.target)) {
+                    profileDropdownMenu.classList.remove('is-active');
+                }
+            });
+
+            // ================================
+            // Search functionality
+            // ================================
+            const searchInput = document.getElementById('search-input');
+            const searchResults = document.getElementById('search-results');
+            let searchTimeout;
+
+            function performSearch(query) {
+                if (query.length > 2) {
+                    fetch(`/search/?query=${query}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            renderResults(data.results);
+                        })
+                        .catch(error => console.error('Error fetching search results:', error));
+                } else {
+                    searchResults.innerHTML = '';
+                }
+            }
+
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                const query = this.value;
+                searchTimeout = setTimeout(() => {
+                    performSearch(query);
+                }, 300);
+            });
+
+            function renderResults(results) {
+                searchResults.innerHTML = '';
+                if (results.length > 0) {
+                    const ul = document.createElement('ul');
+                    results.forEach(item => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<a href="${item.url}" class="search-result-item">
+                                            <span class="search-result-label">${item.label}</span>
+                                            <span class="search-result-type">${item.type}</span>
+                                        </a>`;
+                        ul.appendChild(li);
+                    });
+                    searchResults.appendChild(ul);
+                } else {
+                    searchResults.innerHTML = '<div class="no-results">No results found.</div>';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

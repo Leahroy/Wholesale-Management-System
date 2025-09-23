@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> {# Use the same Font Awesome version #}
+    <link rel="stylesheet" href="{% static 'BWLapp/css/employee_list.css' %}">
+</head>
+<body>
+<div class="container">
+    <div class="header"> {# New header container #}
+        <h1>Employee List</h1>
+        <a href="{% url 'employee-create' %}" class="add-employee-link">
+            <i class="fas fa-plus"></i> Add New Employee {# Icon for Add button #}
+        </a>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="employee-table">
+            <thead>
+                <tr>
+                    <th>Employee_ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employee in employees %}
+                    <tr>
+                        <td>{{ employee.id }}</td>  
+                        <td>{{ employee.name }}</td>
+                        <td>{{ employee.email }}</td>
+                        <td>{{ employee.phone }}</td>
+                        <td>{{ employee.address }}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <a href="{% url 'employee-update' employee.pk %}" class="edit-btn">
+                                    <i class="fas fa-edit"></i> {# Icon for Edit button #}
+                                </a>
+                                <a href="{% url 'employee-delete' employee.pk %}" class="delete-btn">
+                                    <i class="fas fa-trash-alt"></i> {# Icon for Delete button #}
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" class="no-employees-found">No employees found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

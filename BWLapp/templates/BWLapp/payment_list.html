@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment List</title>
+    <link rel="stylesheet" href="{% static 'BWLapp/css/payment_list.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1>Payments</h1>
+            <a href="{% url 'payment-create' %}" class="add-payment-link">
+                <i class="fas fa-plus"></i> Add New Payment
+            </a>
+        </div>
+
+        <!-- Payments Table -->
+        <div class="table-wrapper">
+            <table class="payment-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Payment Date</th>
+                        <th>Total Amount</th>
+                        <th>Method</th>
+                        <th>Processed By</th>
+                        {% if is_admin %}
+                            <th>Actions</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in payments %}
+                        <tr>
+                            <td>{{ payment.order.pk }}</td>
+                            <td>{{ payment.payment_date }}</td>
+                            <td>K{{ payment.total_amount }}</td>
+                            <td>{{ payment.method }}</td>
+                            <td>{{ payment.processed_by.username }}</td>
+                            {% if is_admin %}
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="{% url 'payment-update' payment.pk %}" class="edit-btn">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{% url 'payment-delete' payment.pk %}" class="delete-btn">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6" class="no-payments-found">No payments found.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</body>
+</html>

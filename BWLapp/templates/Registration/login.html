@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'BWLapp/css/login.css' %}">
+</head>
+<body>
+    <div class="container-wrapper">
+        <div class="login-card">
+            
+            <div id="login-form-container">
+                <h3>Login</h3>
+                <form method="post" novalidate id="login-form">
+                    {% csrf_token %}
+                    
+                    <input type="hidden" name="login_submit" value="1">
+                    
+                    {% if login_form.non_field_errors %}
+                        <div class="alert-danger">
+                            {% for error in login_form.non_field_errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="form-group">
+                        <label for="id_username">Username</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user icon"></i>
+                            {{ login_form.username }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_password">Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock icon"></i>
+                            {{ login_form.password }}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Login</button>
+                </form>
+                
+                <p class="link-container">
+                    Don’t have an account? 
+                    <a href="#" id="show-register">Register</a>
+                </p>
+            </div>
+            
+            <div id="register-form-container" style="display: none;">
+                <h3>Register</h3>
+                <form method="POST" novalidate id="register-form">
+                    {% csrf_token %}
+
+                    <input type="hidden" name="register_submit" value="1">
+                    
+                    <div class="form-group">
+                        <label for="id_username">Username</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user icon"></i>
+                            {{ register_form.username }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_password1">Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock icon"></i>
+                            {{ register_form.password1 }}
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_password2">Confirm Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock icon"></i>
+                            {{ register_form.password2 }}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Register</button>
+                </form>
+                
+                <p class="link-container">
+                    Already have an account? 
+                    <a href="#" id="show-login">Login</a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const loginContainer = document.getElementById('login-form-container');
+        const registerContainer = document.getElementById('register-form-container');
+        const showRegisterLink = document.getElementById('show-register');
+        const showLoginLink = document.getElementById('show-login');
+
+        showRegisterLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginContainer.style.display = 'none';
+            registerContainer.style.display = 'block';
+        });
+
+        showLoginLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerContainer.style.display = 'none';
+            loginContainer.style.display = 'block';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Orders</title>
+    <link rel="stylesheet" href="{% static 'BWLapp/css/order_list.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Order List</h1>
+        <a href="{% url 'order-create' %}" class="create-order-link">
+            <i class="fas fa-plus"></i> Create New Order
+        </a>
+    </div>
+    <div class="table-wrapper">
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Status</th>
+                    <th>Order Date</th>
+                    {% if is_admin %}
+                    <th>Actions</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.pk }}</td>
+                    <td>{{ order.customer.name }}</td>
+                    <td>{{ order.status }}</td>
+                    <td>{{ order.order_date|date:"Y-m-d H:i" }}</td>
+                    {% if is_admin %}
+                    <td>
+                        <div class="action-buttons">
+                            <a href="{% url 'order-update' order.pk %}" class="edit-btn">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="{% url 'order-delete' order.pk %}" class="delete-btn">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </div>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="no-orders-found">No orders found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'BWLapp/css/profile.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-card">
+            <h1 class="card-title">My Profile</h1>
+            <div class="profile-header">
+                <img src="{% if request.user.profile.profile_picture %}{{ request.user.profile.profile_picture.url }}{% else %}{% static 'images/profile.jpg' %}{% endif %}" alt="Profile Picture" class="profile-picture">
+                <h2 class="profile-username">{{ request.user.username }}</h2>
+                <p class="profile-role">{{ request.user.get_role_display }}</p>
+            </div>
+
+            <form method="POST" class="profile-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="profile_picture">Update Profile Picture</label>
+                    <input type="file" id="profile_picture" name="profile_picture">
+                </div>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" value="{{ request.user.profile.name|default:'' }}">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" value="{{ request.user.email }}">
+                </div>
+                <div class="form-group">
+                    <label for="phone_number">Phone Number</label>
+                    <input type="text" id="phone_number" name="phone_number" value="{{ request.user.profile.phone_number|default:'' }}">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-save">Save Changes</button>
+                    <a href="{% url 'change_password' %}" class="btn btn-change-password">Change Password</a>
+                </div>
+            </form>
+            <div class="back-link">
+                {% if request.user.role == 'admin' %}
+                    <a href="{% url 'admin_dashboard' %}"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+                {% else %}
+                    <a href="{% url 'employee_dashboard' %}"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
