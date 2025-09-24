@@ -5,21 +5,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'BWLapp/css/login.css' %}">
 </head>
 <body>
-    <div class="container-wrapper">
-        <div class="login-card">
-            
-            <div id="login-form-container">
-                <h3>Login</h3>
+    <div class="login-container">
+
+        <!-- Left side welcome section -->
+        <div class="welcome-section">
+            <h1 class="welcome-heading">Welcome Back</h1>
+            <p class="welcome-text">
+                    Welcome back! We're excited to see you again. Sign in to access your dashboard, manage your account, 
+                    and explore all the features we have prepared for you.
+            </p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+
+        <!-- Right side form section -->
+        <div class="form-section">
+            <div class="form-card" id="login-form-container">
+                <h3 class="form-heading">Sign in</h3>
                 <form method="post" novalidate id="login-form">
                     {% csrf_token %}
-                    
                     <input type="hidden" name="login_submit" value="1">
-                    
+
                     {% if login_form.non_field_errors %}
                         <div class="alert-danger">
                             {% for error in login_form.non_field_errors %}
@@ -28,69 +48,78 @@
                         </div>
                     {% endif %}
 
+                    <!-- Username field -->
                     <div class="form-group">
                         <label for="id_username">Username</label>
-                        <div class="input-with-icon">
-                            <i class="fas fa-user icon"></i>
-                            {{ login_form.username }}
+                        <div class="input-container">
+                            <input type="text" name="{{ login_form.username.name }}" id="{{ login_form.username.id }}" placeholder="Enter your username" {% if login_form.username.value %}value="{{ login_form.username.value }}"{% endif %}>
                         </div>
                     </div>
 
+                    <!-- Password field -->
                     <div class="form-group">
                         <label for="id_password">Password</label>
-                        <div class="input-with-icon">
-                            <i class="fas fa-lock icon"></i>
-                            {{ login_form.password }}
+                        <div class="input-container">
+                            <input type="password" name="{{ login_form.password.name }}" id="{{ login_form.password.id }}" placeholder="Enter your password">
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-primary">Login</button>
+                    <!-- Remember me -->
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember_me">
+                        <label for="remember_me">Remember Me</label>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" class="btn-primary">Sign in now</button>
+                    <a href="#" class="forgot-password">Lost your password?</a>
                 </form>
-                
+                <p class="terms">
+                    By clicking on "Sign in now" you agree to<br>
+                    <a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a>
+                </p>
                 <p class="link-container">
-                    Don’t have an account? 
-                    <a href="#" id="show-register">Register</a>
+                    Don't have an account? <a href="#" id="show-register">Register here</a>
                 </p>
             </div>
-            
-            <div id="register-form-container" style="display: none;">
-                <h3>Register</h3>
+
+            <div class="form-card" id="register-form-container" style="display: none;">
+                <h3 class="form-heading">Register</h3>
                 <form method="POST" novalidate id="register-form">
                     {% csrf_token %}
-
                     <input type="hidden" name="register_submit" value="1">
-                    
+
                     <div class="form-group">
                         <label for="id_username">Username</label>
-                        <div class="input-with-icon">
-                            <i class="fas fa-user icon"></i>
-                            {{ register_form.username }}
+                        <div class="input-container">
+                            <input type="text" name="{{ register_form.username.name }}" id="{{ register_form.username.id }}" placeholder="Choose a username" {% if register_form.username.value %}value="{{ register_form.username.value }}"{% endif %}>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="id_password1">Password</label>
-                        <div class="input-with-icon">
-                            <i class="fas fa-lock icon"></i>
-                            {{ register_form.password1 }}
+                        <div class="input-container">
+                            <input type="password" name="{{ register_form.password1.name }}" id="{{ register_form.password1.id }}" placeholder="Enter a password">
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="id_password2">Confirm Password</label>
-                        <div class="input-with-icon">
-                            <i class="fas fa-lock icon"></i>
-                            {{ register_form.password2 }}
+                        <div class="input-container">
+                            <input type="password" name="{{ register_form.password2.name }}" id="{{ register_form.password2.id }}" placeholder="Confirm your password">
                         </div>
                     </div>
 
                     <button type="submit" class="btn-primary">Register</button>
-                </form>
-                
+                </form
                 <p class="link-container">
-                    Already have an account? 
-                    <a href="#" id="show-login">Login</a>
+                    Already have an account? <a href="#" id="show-login">Login here</a>
                 </p>
+                <p class="terms">
+                    By clicking on "Register" you agree to<br>
+                    <a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a>
+                </p>
+
             </div>
 
         </div>

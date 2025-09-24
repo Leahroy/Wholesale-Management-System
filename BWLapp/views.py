@@ -9,7 +9,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.http import HttpResponse, JsonResponse
 from django.template.loader import render_to_string
 from django.db import transaction
-from django.db.models import Sum, F, Count, Q
+from django.db.models import Sum, F, Count, Q, ExpressionWrapper, DecimalField
 from django.db.models.functions import TruncDay, TruncMonth, TruncYear
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -35,7 +35,6 @@ class CustomJSONEncoder(DjangoJSONEncoder):
         return super().default(obj)
 
 # --- End Custom JSON Encoder ---
-
 # --- New: AjaxableResponseMixin ---
 class AjaxableResponseMixin:
     def render_to_response(self, context, **response_kwargs):
@@ -141,27 +140,37 @@ def homepage(request):
 
 @login_required
 def admin_dashboard(request):
-    # Fetch the data needed for the overview cards
+    # --- Dashboard Overview Cards ---
     low_stock_threshold = 10
     
-    # Calculate total stock and filter for low stock products in a single query
-    low_stock_products = Product.objects.annotate(
-        total_stock_quantity=Sum('stock__quantity')
-    ).filter(
-        total_stock_quantity__lt=low_stock_threshold
-    )
+    # Total Products
+    total_products = Product.objects.count()
 
-    # Calculate total inventory value using ORM aggregation
-    total_inventory_value = Product.objects.aggregate(
-        total_expected_revenue=Sum(F('stock__quantity') * F('selling_price'))
-    )['total_expected_revenue'] or Decimal('0')
-
-    # Calculate total stock quantity using ORM aggregation
+    # Total Stock Quantity
     total_stock_quantity = Stock.objects.aggregate(
         total=Sum('quantity')
     )['total'] or 0
+
+    # Total Inventory Value (The Fix)
+    total_inventory_value = Stock.objects.aggregate(
+        # Aggregate the product of quantity * price_per_package for all stock items
+        total=Sum(F('quantity') * F('price_per_package'))
+    )['total'] or Decimal('0')
+
+    # Low Stock Products
+    # Re-calculate low stock products based on the correct total quantity
+    low_stock_products = Product.objects.annotate(
+        total_quantity=Sum('stock_items__quantity')
+    ).filter(
+        total_quantity__lt=low_stock_threshold
+    )
     
-    # Monthly Sales Chart Data
+    low_stock_count = low_stock_products.count()
+    total_revenue = Payment.objects.aggregate(
+    total=Sum('total_amount')
+    )['total'] or Decimal('0')
+    
+    # --- Monthly Sales Chart Data ---
     monthly_sales = Order.objects.annotate(
         month=TruncMonth('order_date')
     ).values('month').annotate(
@@ -171,12 +180,12 @@ def admin_dashboard(request):
     sales_labels = [entry['month'].strftime('%b %Y') for entry in monthly_sales]
     sales_data = [float(entry['total_sales']) if entry['total_sales'] is not None else 0 for entry in monthly_sales]
 
-    # Product Categories Chart Data
+    # --- Product Categories Chart Data ---
     category_counts = Product.objects.values('category__name').annotate(count=Count('pk'))
     product_labels = [item['category__name'] or 'Uncategorized' for item in category_counts]
     product_data = [item['count'] for item in category_counts]
-    
-    # Example of recent activities
+
+    # --- Recent Activities ---
     recent_orders = Order.objects.order_by('-order_date')[:5]
     recent_activities = [{
         'action': 'New Order', 
@@ -184,22 +193,44 @@ def admin_dashboard(request):
         'date': order.order_date.strftime('%Y-%m-%d')
     } for order in recent_orders]
     
-    # Low Stock Notifications
+    # Get top 5 best-selling products based on quantity sold
+    
+    top_products_qs = (
+    OrderItem.objects
+    .annotate(
+        revenue=ExpressionWrapper(
+            F("quantity") * F("product__cost_price"),
+            output_field=DecimalField()
+        )
+    )
+    .values("product__name")
+    .annotate(total_sales=Sum("revenue"))
+    .order_by("-total_sales")[:5]
+    )
+    
+    top_products_labels = [p["product__name"] for p in top_products_qs]
+    top_products_data = [float(p["total_sales"] or 0) for p in top_products_qs]
+
+    # --- Low Stock Notifications ---
     low_stock_notifs = [{
-        'message': f"Product '{p.name}' is low on stock (Only {p.total_stock_quantity} left).",
+        'message': f"Product '{p.name}' is low on stock (Only {p.total_quantity} left).",
     } for p in low_stock_products]
+
+    all_notifications = low_stock_notifs
     
-    all_notifications = low_stock_notifs 
-    
+    # --- Context ---
     context = {
-        'total_products': Product.objects.count(),
+        'total_products': total_products,
         'low_stock_products': low_stock_products,
-        'low_stock_count': low_stock_products.count(),
+        'low_stock_count': low_stock_count,
         'total_inventory_value': total_inventory_value,
         'total_stock_quantity': total_stock_quantity,
         'low_stock_threshold': low_stock_threshold,
         'recent_activities': recent_activities,
         'notifications': all_notifications,
+        'total_revenue': total_revenue,
+        "top_products_labels": top_products_labels,
+        "top_products_data": top_products_data,
         
         'sales_labels_json': json.dumps(sales_labels, cls=CustomJSONEncoder),
         'sales_data_json': json.dumps(sales_data, cls=CustomJSONEncoder),
@@ -208,34 +239,6 @@ def admin_dashboard(request):
     }
 
     return render(request, 'dashboard/admin_dashboard.html', context)
-
-@login_required
-def employee_dashboard(request):
-    # Fetch the data needed for the overview cards
-    total_customers = Customer.objects.count()
-    total_orders = Order.objects.count()
-    total_payments = Payment.objects.count()
-    pending_orders = Order.objects.filter(status='Pending').count()
-    
-    # Fetch recent activities for the employee dashboard
-    recent_orders = Order.objects.order_by('-order_date')[:5]
-    recent_activities = [{
-        'action': 'New Order',
-        'details': f"Order #{order.order_id} created for {order.customer.name}",
-        'date': order.order_date.strftime('%Y-%m-%d')
-    } for order in recent_orders]
-    
-
-    # Pass the data to the template in a context dictionary
-    context = {
-        'total_customers': total_customers,
-        'total_orders': total_orders,
-        'total_payments': total_payments,
-        'pending_orders': pending_orders,
-        'recent_activities': recent_activities,
-    }
-
-    return render(request, 'dashboard/employee_dashboard.html', context)
 
 @login_required
 def profile(request):
@@ -255,12 +258,8 @@ def profile(request):
         request.user.save()
         profile.save()
         messages.success(request, 'Profile updated successfully.')
-        
-        if request.user.role == 'admin':
-            return redirect('admin_dashboard')
-        else:
-            return redirect('employee_dashboard')
-
+    
+    # Corrected indentation for the final return statement to fix the `profile` view
     return render(request, 'BWLapp/profile.html')
 
 @login_required
@@ -672,3 +671,31 @@ class StockDeleteView(AdminRequiredMixin, DeleteView):
     model = Stock
     template_name = 'BWLapp/stock_confirm_delete.html'
     success_url = reverse_lazy('stock-list')
+
+@login_required
+def employee_dashboard(request):
+    # Fetch the data needed for the overview cards
+    total_customers = Customer.objects.count()
+    total_orders = Order.objects.count()
+    total_payments = Payment.objects.count()
+    pending_orders = Order.objects.filter(status='Pending').count()
+    
+    # Fetch recent activities for the employee dashboard
+    recent_orders = Order.objects.order_by('-order_date')[:5]
+    recent_activities = [{
+        'action': 'New Order',
+        'details': f"Order #{order.order_id} created for {order.customer.name}",
+        'date': order.order_date.strftime('%Y-%m-%d')
+    } for order in recent_orders]
+    
+
+    # Pass the data to the template in a context dictionary
+    context = {
+        'total_customers': total_customers,
+        'total_orders': total_orders,
+        'total_payments': total_payments,
+        'pending_orders': pending_orders,
+        'recent_activities': recent_activities,
+    }
+
+    return render(request, 'dashboard/employee_dashboard.html', context)

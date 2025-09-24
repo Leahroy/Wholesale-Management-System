@@ -59,12 +59,18 @@
         <div id="search-results" class="search-results-dropdown"></div>
     </div>
         <div class="flex items-center space-x-4">
-            <div class="notification-container" id="notification-icon">
-                <i class="fas fa-bell"></i>
+            <div class="notification-container">
+                <i class="fas fa-bell" id="notification-icon"></i>
                 <span class="notification-count" id="notification-count">3</span>
                 <div class="notification-dropdown" id="notification-dropdown">
                     <h4>Notifications</h4>
-                    <ul id = "notification-list">
+                    <ul id="notification-list">
+                        {% for notification in notifications %}
+                        <li>
+                            <h4>{{ notification.message }}</h4>
+                        </li>
+                        {% empty %}<li>No new notifications.</li>{% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>
@@ -96,8 +102,8 @@
             <li><a href="{% url 'admin_dashboard' %}"><i class="fas fa-home"></i><span class="sidebar-text">Dashboard</span></a></li>
             <li><a href="{% url 'employee-list' %}"><i class="fas fa-user-tie"></i><span class="sidebar-text">Employees</span></a></li>
             <li><a href="{% url 'customer-list' %}"><i class="fas fa-users"></i><span class="sidebar-text">Customers</span></a></li>
-            <li><a href="{% url 'stock-list' %}"><i class="fas fa-boxes"></i><span class="sidebar-text">Stocks</span></a></li>
             <li><a href="{% url 'product-list' %}"><i class="fas fa-box-open"></i><span class="sidebar-text">Products</span></a></li>
+            <li><a href="{% url 'stock-list' %}"><i class="fas fa-boxes"></i><span class="sidebar-text">Stocks</span></a></li>
             <li><a href="{% url 'order-list' %}"><i class="fas fa-receipt"></i><span class="sidebar-text">Orders</span></a></li>
             <li><a href="{% url 'payment-list' %}"><i class="fas fa-credit-card"></i><span class="sidebar-text">Transactions</span></a></li>
             <li class="active"><a href="{% url 'reports' %}"><i class="fas fa-chart-line"></i><span class="sidebar-text">Reports</span></a></li>
@@ -124,6 +130,10 @@
                     <h3>Low Stock Alerts</h3>
                     <p>{{ low_stock_count|default:"0" }}</p>
                 </div>
+                <div class="card card-5">
+                    <h3>Total Revenue</h3>
+                    <p>K{{ total_revenue|floatformat:2|default:"0.00" }}</p>
+                </div>
             </div>
 
             <div class="charts-container">
@@ -135,8 +145,11 @@
                     <h2>Product Categories</h2>
                     <canvas id="product-chart"></canvas>
                 </div>
+                <div class="chart-card">
+                    <h2>Top 5 Best-Selling Products</h2>
+                    <canvas id="top-products-chart"></canvas>
+                </div>
             </div>
-
             <div class="critical-info-container">
                 <section class="recent-activities">
                     <h2>Recent Activities</h2>

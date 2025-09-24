@@ -1,92 +1,144 @@
-/*general body styling*/
-:root {
-    --primary-color: #0d6efd; /* Same as Bootstrap's primary */
-    --background-color: #f8f9fa; /* Same as Bootstrap's bg-light */
-    --text-color: #212529;
-    --card-bg: #ffffff;
-    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --border-color: #ced4da;
-    --danger-color: #dc3545;
-    --danger-bg: #f8d7da;
-}
-
+/* General body styling */
 body {
     font-family: 'Inter', sans-serif;
-    background-color: var(--background-color);
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: url('/static/images/login_back.jpg');
+    background-image: url('/static/images/image2.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    overflow: hidden; /* Prevents scrollbars */
 }
 
-.container-wrapper {
+/* Main container for the two-column layout */
+.login-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
     width: 100%;
     height: 100%;
 }
 
-.login-card {
-    background-color: var(--card-bg);
-    box-shadow: var(--card-shadow);
+/* Left-side welcome section */
+.welcome-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 5rem;
+    position: relative;
+    /* This makes the text readable against the image */
+    background: linear-gradient(to right, rgba(0,0,0,0.5), transparent);
+}
+
+.welcome-heading {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.welcome-text {
+    font-size: 1rem;
+    line-height: 1.5;
+    max-width: 400px;
+    margin-top: 1rem;
+}
+
+.social-icons {
+    margin-top: 2rem;
+}
+
+.social-icons a {
+    color: #fff;
+    font-size: 1.5rem;
+    margin-right: 1.5rem;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.social-icons a:hover {
+    opacity: 1;
+}
+
+/* Right-side form section */
+.form-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     padding: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.form-card {
     width: 100%;
     max-width: 400px;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0); /* Transparent background */
     border-radius: 12px;
-    border: 1px solid #e9ecef;
 }
 
-.login-card h3 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    color: var(--text-color);
-    font-weight: 600;
-}
-
-.alert-danger {
-    background-color: var(--danger-bg);
-    color: var(--danger-color);
-    border: 1px solid var(--danger-color);
-    padding: 1rem;
-    border-radius: 6px;
-    margin-bottom: 1rem;
+.form-heading {
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-align: left;
 }
 
 .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .form-group label {
     display: block;
+    color: #fff;
+    font-weight: 600;
     margin-bottom: 0.5rem;
-    color: var(--text-color);
 }
 
-.form-group input {
+.input-container input {
     width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
+    padding: 0.75rem;
+    border: none;
+    border-bottom: 2px solid #fff;
+    background: transparent;
+    color: #fff;
     font-size: 1rem;
-    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    box-sizing: border-box; /* Ensures padding doesn't affect total width */
+    transition: border-color 0.2s ease-in-out;
 }
 
-.form-group input:focus {
+.input-container input:focus {
     outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    border-bottom-color: #f89d58; /* Orange color on focus */
+}
+
+/* Custom placeholder color */
+::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    margin-bottom: 1.5rem;
+}
+
+.remember-me input[type="checkbox"] {
+    margin-right: 0.5rem;
 }
 
 .btn-primary {
     width: 100%;
     padding: 0.75rem;
     border: none;
-    border-radius: 6px;
-    background-color: var(--primary-color);
+    border-radius: 50px;
+    background-color: #f89d58; /* Orange button color */
     color: #fff;
     font-size: 1rem;
     font-weight: 600;
@@ -95,152 +147,37 @@ body {
 }
 
 .btn-primary:hover {
-    background-color: #0b5ed7; /* A slightly darker primary color */
+    background-color: #e58d4a;
 }
 
-.register-link-container {
-    text-align: center;
-    margin-top: 1rem;
-}
-
-.register-link-container a {
-    text-decoration: none;
-    color: var(--primary-color);
-}
-
-.register-link-container a:hover {
-    text-decoration: underline;
-}
-
-
-/* login.css */
-
-/* Basic page setup */
-body {
-    font-family: 'Inter', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f0f2f5;
-}
-
-/* Page Container - to hold header, main, footer */
-.page-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Ensures it takes up full viewport height */
-}
-
-/* Header */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: #fff;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-.logo {
-    font-weight: 700;
-    font-size: 24px;
-}
-
-.navbar {
-    display: flex;
-    gap: 20px;
-}
-
-.nav-item {
-    text-decoration: none;
-    color: #333;
-}
-
-.login-form-indicator {
-    padding: 8px 16px;
-    border: 1px solid #333;
-    border-radius: 5px;
-}
-
-/* Main Content Area */
-.main-content {
-    flex-grow: 1; /* This makes the main content area expand to fill available space */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-/* Login Card Styling */
-.login-card {
-    background-color: #fff;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 350px;
-    text-align: center;
-}
-
-/* Form element styling */
-.form-group {
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.form-group label {
+.forgot-password {
     display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 0.75rem 1rem 0.75rem 2.5rem; /* Increased left padding for the icon */
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    font-size: 1rem;
-    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    box-sizing: border-box; /* Ensures padding doesn't affect total width */
-    background-color: #fffacd;
-}
-.input-with-icon {
-    position: relative; /* This is the parent container for positioning */
-    display: flex; /* Helps align the icon and input */
-    align-items: center; /* Vertically centers the icon */
-    margin-bottom: 1rem;
-}
-.input-with-icon .icon {
-    position: absolute; /* Positions the icon relative to the parent (.input-with-icon) */
-    left: 1rem; /* Controls the distance from the left edge */
-    color: black;
-    z-index: 10; /* Ensures the icon is on top of the input */
-}
-
-
-.btn-primary {
-    width: 100%;
-    padding: 12px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.register-link-container {
-    margin-top: 15px;
-}
-
-.register-link-container a {
-    color: #007bff;
+    text-align: center;
+    color: #fff;
+    margin-top: 1rem;
     text-decoration: none;
 }
 
-/* Footer */
-.footer {
-    padding: 20px;
+.terms {
+    color: #fff;
+    font-size: 0.8rem;
     text-align: center;
-    background-color: #f0f2f5;
-    border-top: 1px solid #e0e0e0;
+    margin-top: 2rem;
+}
+
+.terms a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* Django-specific error message styling */
+.alert-danger {
+    background-color: rgba(220, 53, 69, 0.5);
+    color: #fff;
+    border: 1px solid rgba(220, 53, 69, 0.8);
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    text-align: center;
 }
