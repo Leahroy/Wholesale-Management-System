@@ -10,21 +10,57 @@
 <body>
     <div class="form-container">
         <h1>Create New Order</h1>
+
         <form method="post">
             {% csrf_token %}
             
             <h2>Order Details</h2>
+            <!-- Render main order details -->
             {{ order_form.as_p }}
             
             <hr>
             
             <h2>Order Items</h2>
             {{ formset.management_form }}
+            
             <div class="formset-container">
                 {% for form in formset %}
                     <div class="order-item-form">
                         <div class="form-row">
-                            {{ form.as_p }}
+                            
+                            <!-- 1. Product Package Field -->
+                            <div class="form-group" style="flex: 2;">
+                                <label for="{{ form.stock_item.id_for_label }}">{{ form.stock_item.label }}</label>
+                                {{ form.stock_item }}
+                                {% if form.stock_item.errors %}
+                                    <div class="error-list">{{ form.stock_item.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- 2. Quantity Field -->
+                            <div class="form-group" style="flex: 1;">
+                                <label for="{{ form.quantity.id_for_label }}">{{ form.quantity.label }}</label>
+                                {{ form.quantity }}
+                                {% if form.quantity.help_text %}
+                                    <small class="help-text">{{ form.quantity.help_text }}</small>
+                                {% endif %}
+                                {% if form.quantity.errors %}
+                                    <div class="error-list">{{ form.quantity.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- 3. Delete Checkbox (only shown for existing items) -->
+                            {% if form.instance.pk %}
+                                <div class="form-group" style="width: 50px; text-align: center;">
+                                    <label>{{ form.DELETE.label }}</label>
+                                    {{ form.DELETE }}
+                                </div>
+                            {% endif %}
+
+                            <!-- Hidden Fields (like primary key) -->
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
                         </div>
                     </div>
                 {% endfor %}

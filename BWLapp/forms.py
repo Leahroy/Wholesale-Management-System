@@ -6,11 +6,12 @@ from django.contrib.auth import get_user_model
 
 class RegisterForm(UserCreationForm):
     """
-    Form for user registration.
+    Form for user registration (User Account fields ONLY).
     """
     class Meta:
         model = CustomUser
-        fields = ['username', 'password1', 'password2']
+        fields = ['username', 'email'] + list(UserCreationForm.Meta.fields)
+
         
 class LoginForm(AuthenticationForm):
     """
@@ -31,16 +32,35 @@ class OrderForm(forms.ModelForm):
 class OrderItemForm(forms.ModelForm):
     """
     Form for creating or updating an order item.
+    
+    NOTE: We remove 'price_each' from fields, as it should be automatically 
+    set by the view/model's save logic based on the selected 'stock_item'.
     """
+    
+    # Custom ModelChoiceField for better display and filtering
+    stock_item = forms.ModelChoiceField(
+        # ✅ CRITICAL UPDATE: Filter to show ONLY available stock items
+        queryset=Stock.objects.filter(is_available=True).select_related('product').all(),
+        label="Product Package",
+        empty_label="Select a Package" 
+    )
+
     class Meta:
         model = OrderItem
-        fields = ['product', 'quantity', 'price_each']
+        fields = ['stock_item', 'quantity'] 
+        # 'price_each' is intentionally omitted here to be set programmatically
+
         
 PAYMENT_METHOD_CHOICES = (
     ('Credit Card', 'Credit Card'),
     ('Debit Card', 'Debit Card'),
     ('Cash', 'Cash'),
     ('Online Transfer', 'Online Transfer'),
+)
+
+AVAILABILITY_CHOICES = (
+    (True, 'Yes'),
+    (False, 'No'),
 )
 
 class PaymentForm(forms.ModelForm):
@@ -58,7 +78,6 @@ class ProductForm(forms.ModelForm):
     """
     Form for creating or updating a Product instance, including all fields.
     """
-    # FIX: Added required=False here to allow the field to be optional
     category = forms.ModelChoiceField(
         queryset=Category.objects.all(),
         label="Category",
@@ -72,18 +91,31 @@ class ProductForm(forms.ModelForm):
             'name',
             'description',
             'category',
-            'cost_price',
-        ]
-        # FIX: The `widgets` dictionary is no longer needed here as `packaging` has been removed.
 
+            'selling_price',
+            'image', 
+        ]
+        
 # NEW: Create a separate form for the Stock model
 class StockForm(forms.ModelForm):
     class Meta:
         model = Stock
-        fields = ['product', 'package_type', 'quantity', 'price_per_package']
+        # ✅ FIX: 'is_available' is now included in the fields list 
+        fields = ['product', 'package_type', 'quantity', 'price_per_package', 'is_available'] 
         widgets = {
             'product': forms.Select(attrs={'class': 'form-control'}),
-            'package_type': forms.Select(choices=Stock.PACKAGE_TYPE_CHOICES, attrs={'class': 'form-control'}),
+            'package_type': forms.Select(choices=Stock.PACKAGE_TYPE_CHOICES, attrs={'class': 'form-control'}), 
             'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
             'price_per_package': forms.NumberInput(attrs={'class': 'form-control'}),
+            # Optional: Use CheckboxInput if you prefer a checkbox over a dropdown
+            # 'is_available': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            # Note: By default, Django uses a Select widget for BooleanField, giving you the Yes/No dropdown.
         }
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Add basic form styling (recommended practice for all forms)
+        for field_name, field in self.fields.items():
+            # Apply 'form-control' to non-select and non-checkbox fields
+            if not isinstance(field.widget, (forms.Select, forms.CheckboxInput)):
+                field.widget.attrs.update({'class': 'form-control'})

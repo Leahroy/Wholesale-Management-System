@@ -21,13 +21,22 @@
         </ul>
     {% endif %}
 
-    <form method="post" novalidate>
+    <form method="post" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
         
         {% for field in form %}
             <div class="form-group">
                 <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                
+                {% if field.name == 'image' and field.value and field.value.url %}
+                    <div class="current-image">
+                        <p>Current Image:</p>
+                        <img src="{{ field.value.url }}" alt="Current Product Image" style="max-width: 150px; height: auto; display: block; margin-bottom: 10px;">
+                    </div>
+                {% endif %}
+                
                 {{ field }}
+                
                 {% if field.errors %}
                     <ul class="errorlist">
                         {% for error in field.errors %}
@@ -40,7 +49,7 @@
         
         <div class="form-actions">
             <button type="submit" class="btn btn-success">
-                {% if object %}💾 Update{% else %}➕ Create{% endif %}
+                {% if object %}💾 Update{% else %}➕ Add{% endif %}
             </button>
             <a href="{% url 'product-list' %}" class="btn btn-secondary">❌ Cancel</a>
         </div>

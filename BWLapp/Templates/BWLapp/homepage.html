@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
+    <title>Homepage - Bougainville Wholesale Limited</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="{% static 'BWLapp/css/homepage.css' %}">
@@ -12,39 +12,51 @@
 <body>
     <div class="page-container">
         <header class="header">
-            <a href="#" class="logo">
-                <img src="{% static 'images/logo.jpg' %}" alt="Company Logo">
-            </a>
+            <div class="logo">
+                <h1>BMSapp</h1>
+            </div>
             <nav class="navbar">
-                <a href="#" class="nav-item">Home</a>
-                <a href="#" class="nav-item">Contact</a>
-                <a href="#" class="nav-item">About Us</a>
-                <a href="#" class="nav-item">Products Catalogue</a>
+                <a href="{% url 'homepage' %}" class="nav-item">Home</a>
+                <a href="#contact" class="nav-item">Contact</a>
+                <a href="#about" class="nav-item">About Us</a>
+                <a href="#products-catalogue" class="nav-item">Products Catalogue</a>
             </nav>
             <a href="{% url 'auth' %}" class="login-form-indicator">User Panel</a>
         </header>
 
+        <section class="welcome-section">
+            <div class="welcome-container">
+                <h1>Welcome to Bougainville Wholesale Limited</h1>
+                <p>Your trusted partner for quality products and wholesale solutions — proudly serving businesses across Bougainville and Papua New Guinea.</p>
+            </div>
+        </section>
+
         <main class="main-content">
             <section class="hero-banner-section">
-                <div class="hero-banner-container">
-                    <div class="image-carousel">
-                        <div class="carousel-slides">
-                            <img src="{% static 'images/home_1.jpg' %}" alt="Bougainville Culture" class="carousel-slide active">
-                            <img src="{% static 'images/home_2.jpg' %}" alt="Bougainville Scenery" class="carousel-slide">
-                            <img src="{% static 'images/home_3.jpg' %}" alt="Bougainville Business" class="carousel-slide">
-                            <img src="{% static 'images/home_4.jpg' %}" alt="Bougainville Business" class="carousel-slide">
-                        </div>
-                        <button class="carousel-control prev" aria-label="Previous slide"><i class="fas fa-chevron-left"></i></button>
-                        <button class="carousel-control next" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>
-                        <div class="carousel-indicators">
-                            <span class="indicator active" data-slide-index="0"></span>
-                            <span class="indicator" data-slide-index="1"></span>
-                            <span class="indicator" data-slide-index="2"></span>
-                        </div>
-                    </div>
-                    <div class="hero-overlay-content">
-                        <p class="overlay-text">Happy 50th Independence Anniversary Papua New Guinea</p>
-                    </div>
+                {# REMOVED hero-banner-container AND hero-overlay-content #}
+                <div class="carousel-slides">
+                    <img src="{% static 'images/home_1.jpg' %}" alt="Bougainville Culture" class="carousel-slide active">
+                    <img src="{% static 'images/home_2.jpg' %}" alt="Bougainville Scenery" class="carousel-slide">
+                    <img src="{% static 'images/home_5.jpg' %}" alt="Bougainville Business" class="carousel-slide">
+                    <img src="{% static 'images/home_4.jpg' %}" alt="Bougainville Business" class="carousel-slide">
+                    <img src="{% static 'images/home_6.jpg' %}" alt="Bougainville Business" class="carousel-slide">
+                </div>
+                        <div class="carousel-caption marquee-container">
+            <div class="marquee-content">
+                <span>BWLapp: Wholesale for Income Generation &nbsp; | &nbsp; New Establish Project: Cocoa Production &nbsp; | &nbsp; New Establish Project Balsa Wood Production &nbsp; | &nbsp; </span>
+                
+                {# REPEAT THE EXACT SAME CONTENT TWICE MORE FOR A SMOOTH LOOP #}
+                <span>BMSapp: Wholesale for Income Generation &nbsp; | &nbsp; New Establish Project: Cocoa Production &nbsp; | &nbsp; New Establish Project: Balsa Wood Production &nbsp; | &nbsp; </span>
+                <span>Bmsapp: Wholesale for Income Generation &nbsp; | &nbsp; New Establish Project: Cocoa Production &nbsp; | &nbsp; New Establish Project: Balsa Wood Production &nbsp; | &nbsp; </span>
+            </div>
+        </div>
+                <button class="carousel-control prev" aria-label="Previous slide"><i class="fas fa-chevron-left"></i></button>
+                <button class="carousel-control next" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>
+                <div class="carousel-indicators">
+                    <span class="indicator active" data-slide-index="0"></span>
+                    <span class="indicator" data-slide-index="1"></span>
+                    <span class="indicator" data-slide-index="2"></span>
+                    <span class="indicator" data-slide-index="3"></span>
                 </div>
             </section>
 
@@ -54,7 +66,7 @@
                         <div class="info-card">
                             <i class="fas fa-chart-line"></i>
                             <h3>Performance Metrics</h3>
-                            <p>Track your sales, stock levels, and revenue with our easy-to-use dashboard.  </p>
+                            <p>Track your sales, stock levels, and revenue with our easy-to-use dashboard.</p>
                         </div>
                         <div class="info-card">
                             <i class="fas fa-boxes"></i>
@@ -68,17 +80,51 @@
                         </div>
                     </div>
                 </section>
-                
+
+                <section id="products-catalogue" class="featured-products-section">
+                    <h2>Featured Wholesale Products</h2>
+                    <div class="product-showcase-grid">
+                        {% for product in latest_products %}
+                        <div class="product-card">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                            {% else %}
+                                <img src="{% static 'images/placeholder.png' %}" alt="{{ product.name }} No Image" class="product-image">
+                            {% endif %}
+
+                            <h3>{{ product.name }}</h3>
+                            <p class="product-description">{{ product.description|truncatechars:70 }}</p>
+
+                            <p class="product-price">K{{ product.selling_price|floatformat:2|default:"0.00" }}</p>
+
+                            <a href="#" class="cta-button detail-cta">See More Details</a>
+
+                        </div>
+                        {% empty %}
+                        <p class="no-products-message">Our featured products are currently being updated. Please check back soon!</p>
+                        {% endfor %}
+                    </div>
+                    <a href="#products-catalogue" class="cta-button">View Full Product Catalogue</a>
+                </section>
+
                 <section class="cta-section">
-                    <h2>Ready to grow your business?</h2>
-                    <p>Partner with Bougainville Wholesale Limited and get access to a curated selection of products at competitive prices.</p>
-                    <a href="{% url 'auth' %}" class="cta-button">Apply Now</a>
+                    <div class="cta-card new-customer-cta">
+                        <h2>Ready to grow your business?</h2>
+                        <p>Partner with Bougainville Wholesale Limited and get access to a curated selection of products at competitive prices.</p>
+                        <a href="#" class="cta-button primary-cta">Apply For Wholesale Account</a>
+                    </div>
+
+                    <div class="cta-card admin-login-cta">
+                        <h2>Existing Partners and Staff</h2>
+                        <p>Quick access to your existing business account or internal management tools. Manage orders, view client data, and handle inventory.</p>
+                        <a href="{% url 'auth' %}" class="cta-button detail-cta">User Panel</a>
+                    </div>
                 </section>
             </div>
         </main>
 
         <footer class="footer">
-            <div class="footer-container">
+            <div id="contact" class="footer-container">
                 <div class="footer-section company-info">
                     <h3>Bougainville Wholesale Limited</h3>
                     <p>Your Trusted Wholesale Partner in Bougainville</p>
@@ -89,11 +135,11 @@
                 <div class="footer-section quick-links">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Products</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Login</a></li>
+                        <li><a href="{% url 'homepage' %}">Home</a></li>
+                        <li><a href="#products-catalogue">Products</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="{% url 'auth' %}">Login</a></li>
                     </ul>
                 </div>
                 <div class="footer-section policies">
@@ -102,12 +148,13 @@
                         <li><a href="#">Privacy Policy</a></li>
                         <li><a href="#">Terms & Conditions</a></li>
                         <li><a href="#">Refund Policy</a></li>
+                        <li><a href="#">Client Privacy</a></li>
                     </ul>
                 </div>
                 <div class="footer-section social-media">
                     <h4>Follow Us</h4>
-                    <a href="#">Facebook</a> | 
-                    <a href="#">Instagram</a> | 
+                    <a href="#">Facebook</a> |
+                    <a href="#">Instagram</a> |
                     <a href="#">LinkedIn</a>
                 </div>
             </div>

@@ -1,40 +1,74 @@
-/* General Body and Container Styling */
-body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background-color: #f0f2f5;
-    margin: 0;
-    padding: 2rem 0;
-    color: #333;
+/* BWLapp/css/order_formset.css - Enhanced Professional Styling */
+
+/* --- Color Palette and Global Styles --- */
+:root {
+    --primary-blue: #4a90e2;        /* Main accent blue */
+    --primary-dark-blue: #357bd8;
+    --background-light: #f5f7fa;    /* Very light background */
+    --card-background: #ffffff;
+    --text-dark: #2c3e50;           /* Darker text for titles */
+    --text-medium: #5a6a7c;         /* Medium text for labels/body */
+    --text-light: #8e9ba8;          /* Lighter text for help/meta */
+    --border-light: #e0e6ed;
+    --border-medium: #cdd5df;
+    --shadow-light: rgba(0, 0, 0, 0.06);
+    --shadow-medium: rgba(0, 0, 0, 0.1);
+
+    --button-primary-bg: linear-gradient(to right, #6b8bf5 0%, #4a90e2 100%); /* Gradient for primary button */
+    --button-primary-hover-bg: linear-gradient(to right, #5c79e6 0%, #3e81d1 100%);
+    --button-secondary-bg: #e2e8f0;
+    --button-secondary-text: #4a5568;
+    --button-secondary-hover-bg: #cbd5e0;
+
+    --error-color: #e53e3e;
 }
 
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--background-light); /* Apply light background color */
+    margin: 0;
+    padding: 2rem 0;
+    color: var(--text-medium);
+    line-height: 1.6;
+}
+
+/* --- Main Container --- */
 .form-container {
     max-width: 900px;
     margin: 2rem auto;
-    background-color: #ffffff;
+    background-color: var(--card-background); /* White card background */
     padding: 2.5rem;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e2e8f0;
+    box-shadow: 0 10px 30px var(--shadow-medium); /* More prominent shadow */
+    border: 1px solid var(--border-light);
 }
 
+/* --- Headings --- */
 h1 {
-    font-size: 2rem;
+    font-size: 2.2rem; /* Slightly larger title */
     font-weight: 700;
-    color: #1a202c;
+    color: var(--text-dark); /* Darker heading color */
     margin-bottom: 0.5rem;
-    border-bottom: 2px solid #e2e8f0;
+    border-bottom: 2px solid var(--border-light);
     padding-bottom: 1rem;
 }
 
 h2 {
-    font-size: 1.5rem;
+    font-size: 1.6rem; /* Slightly larger subheading */
     font-weight: 600;
-    color: #4a5568;
+    color: var(--text-dark); /* Darker subheading color */
     margin-top: 2rem;
     margin-bottom: 1rem;
 }
 
-/* Form Styling */
+/* --- Horizontal Rule --- */
+hr {
+    border: none;
+    border-top: 1px solid var(--border-light); /* Lighter, more subtle line */
+    margin: 2.5rem 0;
+}
+
+/* --- Form Group & Labels --- */
 .form-group {
     margin-bottom: 1.5rem;
 }
@@ -43,109 +77,210 @@ label {
     font-weight: 600;
     display: block;
     margin-bottom: 0.5rem;
-    color: #4a5568;
+    color: var(--text-medium);
 }
 
-input[type="text"], 
-input[type="number"], 
-input[type="email"], 
+/* --- Input & Select Fields --- */
+input[type="text"],
+input[type="number"],
+input[type="email"],
 select {
     width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid #cbd5e0;
-    border-radius: 8px;
+    padding: 0.8rem 1rem; /* Consistent, slightly larger padding */
+    border: 1px solid var(--border-medium); /* Slightly darker border for definition */
+    border-radius: 8px; /* Consistent border radius */
     box-sizing: border-box;
     font-size: 1rem;
-    color: #2d3748;
-    background-color: #f8fafc;
+    color: var(--text-dark);
+    background-color: var(--card-background); /* White background for all inputs */
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-input[type="text"]:focus, 
-input[type="number"]:focus, 
-input[type="email"]:focus, 
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
 select:focus {
     outline: none;
-    border-color: #4c51bf;
-    box-shadow: 0 0 0 3px rgba(76, 81, 191, 0.2);
+    border-color: var(--primary-blue); /* Primary blue focus border */
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.25); /* Stronger focus shadow */
 }
 
-/* Formset Styling (e.g., for Order Items) */
+/* --- Formset / Order Item Specific Styles --- */
 .formset-container {
     margin-top: 2rem;
-    padding: 1.5rem;
-    background-color: #f7f9fb;
-    border-radius: 8px;
-    border: 1px dashed #cbd5e0;
+    padding: 1.5rem; /* Slightly more padding for the dashed container */
+    background-color: var(--background-light); /* Lighter background for the container */
+    border-radius: 10px;
+    border: 1px dashed var(--border-medium); /* Clearer dashed border */
 }
 
 .order-item-form {
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-light); /* Defined border for each item card */
     padding: 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    background-color: #ffffff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    background-color: var(--card-background); /* White background for item cards */
+    box-shadow: 0 2px 10px var(--shadow-light); /* Subtle shadow for depth */
 }
 
 .form-row {
     display: flex;
-    gap: 1.5rem;
-    align-items: flex-end;
+    gap: 1.5rem; /* Maintain gap */
+    align-items: flex-start;
 }
 
-.form-row p {
-    flex-grow: 1;
-    margin: 0;
-    padding-bottom: 0;
+/* Specific adjustments for Order Details form ({{ order_form.as_p }}) */
+.form-container > form > p { /* Targets the <p> elements generated by .as_p */
+    margin-bottom: 1.5rem;
+}
+.form-container > form > p label {
+    font-weight: 600;
+    color: var(--text-medium);
+}
+.form-container > form > p input, 
+.form-container > form > p select {
+    width: 100%; /* Ensure they take full width */
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border-medium);
+    border-radius: 8px;
+    background-color: var(--card-background);
 }
 
-.delete-row-btn {
-    padding: 0.5rem 0.75rem;
-    background-color: #e53e3e;
-    color: white;
-    border: none;
-    border-radius: 6px;
+
+/* Ensure the manual form-groups inside form-row take up the space they need */
+.form-row .form-group {
+    margin-bottom: 0; /* Remove default paragraph margin */
+    flex-grow: 1; /* Allow them to grow and fill space */
+}
+.form-row .form-group:first-child { /* Product Package */
+    flex: 2; /* Give more space to product package */
+}
+.form-row .form-group:nth-child(2) { /* Quantity */
+    flex: 1; /* Less space for quantity */
+    max-width: 150px; /* Limit max width for quantity for better proportion */
+}
+
+
+/* --- Delete Checkbox Styling --- */
+.form-row .form-group[style*="width: 50px"] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 8px; /* Adjust vertical alignment of checkbox */
+    width: 70px !important; /* Slightly more room for "Delete" */
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.form-row .form-group label[for*="-DELETE"] {
+    font-size: 0.75rem;
+    color: var(--error-color); /* Red color for delete action */
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+}
+
+.form-row input[type="checkbox"] {
+    width: 18px; /* Slightly larger checkbox */
+    height: 18px;
     cursor: pointer;
-    font-size: 0.875rem;
+    border: 1px solid var(--error-color);
+    border-radius: 4px;
+    accent-color: var(--error-color); /* Changes the checked color */
+    margin-top: 5px;
 }
 
-/* Action Buttons */
+/* --- Help Text & Error List --- */
+.help-text {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--text-light); /* Lighter color for help text */
+}
+
+.error-list {
+    color: var(--error-color);
+    font-size: 0.85rem;
+    margin-top: 0.4rem;
+    list-style-type: none; /* Remove bullet points */
+    padding-left: 0;
+}
+
+/* --- Action Buttons --- */
 .form-actions {
-    margin-top: 2.5rem;
+    margin-top: 3rem; /* More space above buttons */
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
 }
 
 .button {
-    padding: 0.8rem 1.8rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    text-decoration: none;
-    text-align: center;
+    padding: 0.85rem 2rem; /* Slightly larger buttons */
+    border-radius: 8px; /* Less rounded than "pill" for this context, more like a modern button */
     font-size: 1rem;
     font-weight: 600;
-    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px var(--shadow-light); /* Consistent shadow */
 }
 
 .button-primary {
-    background-color: #4c51bf;
+    background-image: var(--button-primary-bg);
     color: white;
 }
-
 .button-primary:hover {
-    background-color: #434190;
-    box-shadow: 0 4px 12px rgba(76, 81, 191, 0.25);
+    background-image: var(--button-primary-hover-bg);
+    box-shadow: 0 6px 15px var(--shadow-medium);
+    transform: translateY(-1px);
 }
 
 .button-secondary {
-    background-color: #e2e8f0;
-    color: #4a5568;
+    background-color: var(--button-secondary-bg);
+    color: var(--button-secondary-text);
+    border: 1px solid var(--border-medium);
+    box-shadow: 0 2px 8px var(--shadow-light);
+}
+.button-secondary:hover {
+    background-color: var(--button-secondary-hover-bg);
+    color: var(--text-dark);
+    box-shadow: 0 4px 10px var(--shadow-medium);
+    transform: translateY(-1px);
 }
 
-.button-secondary:hover {
-    background-color: #cbd5e0;
-    box-shadow: 0 4px 12px rgba(175, 184, 199, 0.25);
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 1.5rem;
+        margin: 1.5rem auto;
+    }
+    h1 {
+        font-size: 1.8rem;
+    }
+    h2 {
+        font-size: 1.3rem;
+    }
+    .form-row {
+        flex-direction: column; /* Stack order items on small screens */
+        gap: 1rem;
+        align-items: stretch;
+    }
+    .form-row .form-group:first-child,
+    .form-row .form-group:nth-child(2) {
+        flex: auto; /* Reset flex for stacking */
+        max-width: none;
+    }
+    .form-row .form-group[style*="width: 50px"] {
+        width: 100% !important; /* Full width for delete on mobile */
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        padding-top: 0;
+        margin-top: -10px; /* Reduce space */
+    }
+    .form-row .form-group label[for*="-DELETE"] {
+        margin-right: 10px;
+        margin-bottom: 0;
+    }
+    .form-actions {
+        flex-direction: column-reverse;
+        gap: 1rem;
+    }
 }

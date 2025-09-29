@@ -19,39 +19,50 @@
     <table class="stock-table">
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Product Name</th>
                 <th>Package Type</th>
                 <th>Quantity</th>
                 <th>Price per Package</th>
                 <th>Total Amount</th>
+                <th>Available</th> 
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for stock in all_stocks %}
             <tr>
+                <td>{{ stock.pk }}</td>
                 <td>{{ stock.product.name }}</td>
                 <td>{{ stock.get_package_type_display }}</td>
                 <td>{{ stock.quantity }}</td>
                 <td>K{{ stock.price_per_package|floatformat:2 }}</td>
                 <td>K{{ stock.expected_total_amount|floatformat:2 }}</td>
+                
+                <td>
+                    {% if stock.is_available %}
+                        <span style="color: green; font-weight: bold;">Yes</span>
+                    {% else %}
+                        <span style="color: red; font-weight: bold;">No</span>
+                    {% endif %}
+                </td>
+                
                 <td>
                     <div class="action-buttons">
-                        <a href="{% url 'stock-update' stock.pk %}" class="edit-btn">
+                        <a href="{% url 'stocks-update' stock.pk %}" class="edit-btn">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <form method="post" action="{% url 'stock-delete' stock.pk %}" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="delete-btn">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </form>
-                    </div>
+                        
+                        <a href="{% url 'stocks-delete' stock.pk %}" class="delete-btn" title="Delete Stock">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+
+                        </div>
                 </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="6" class="no-stocks-found">No stock items found.</td>
+                <td colspan="8" class="no-stocks-found">No stock items found.</td>
             </tr>
             {% endfor %}
         </tbody>

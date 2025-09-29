@@ -51,7 +51,7 @@
 </head>
 <body class='flex flex-col min-h-screen'>
     <header class="main-header">
-    <div class="logo-section mb-8">BWLapp</div>
+    <div class="logo-section mb-8">BMSapp</div>
 
     <div class="header-right-group">
             <div class="search-bar">
@@ -126,13 +126,15 @@
                     <h3>Inventory Value</h3>
                     <p>K{{ total_inventory_value|floatformat:2|default:"0.00" }}</p>
                 </div>
-                <div class="card card-4 alert-card">
-                    <h3>Low Stock Alerts</h3>
-                    <p>{{ low_stock_count|default:"0" }}</p>
-                </div>
+
                 <div class="card card-5">
                     <h3>Total Revenue</h3>
                     <p>K{{ total_revenue|floatformat:2|default:"0.00" }}</p>
+                </div>
+
+                                <div class="card card-4 alert-card">
+                    <h3>Low Stock Alerts</h3>
+                    <p>{{ low_stock_count|default:"0" }}</p>
                 </div>
             </div>
 
@@ -203,204 +205,279 @@
         <p>&copy; 2025 Bougainville Wholesale. All rights reserved.</p>
         <p>Developed by Leahroy Daing</p>
     </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Get references to the notification elements
-            const notificationIcon = document.getElementById('notification-icon');
-            const notificationDropdown = document.getElementById('notification-dropdown');
-            const notificationCount = document.getElementById('notification-count');
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get references to the notification elements
+        const notificationIcon = document.getElementById('notification-icon');
+        const notificationDropdown = document.getElementById('notification-dropdown');
+        const notificationCount = document.getElementById('notification-count');
 
-            // Toggle the dropdown visibility when the bell icon is clicked
-            notificationIcon.addEventListener('click', function(event) {
-                notificationDropdown.classList.toggle('is-active');
-                event.stopPropagation(); // Prevent the document click listener from firing immediately
-            });
+        // Toggle the dropdown visibility when the bell icon is clicked
+        notificationIcon.addEventListener('click', function(event) {
+            notificationDropdown.classList.toggle('is-active');
+            event.stopPropagation(); // Prevent the document click listener from firing immediately
+        });
 
-            // Hide the dropdown when clicking anywhere else on the page
-            document.addEventListener('click', function(event) {
-                if (!notificationDropdown.contains(event.target) && !notificationIcon.contains(event.target)) {
-                    notificationDropdown.classList.remove('is-active');
-                }
-            });
-
-            // Update the notification count based on the number of list items
-            function updateNotificationCount() {
-                const count = notificationDropdown.querySelectorAll('li').length;
-                notificationCount.textContent = count;
-                notificationCount.style.display = count > 0 ? 'block' : 'none';
+        // Hide the dropdown when clicking anywhere else on the page
+        document.addEventListener('click', function(event) {
+            if (!notificationDropdown.contains(event.target) && !notificationIcon.contains(event.target)) {
+                notificationDropdown.classList.remove('is-active');
             }
+        });
 
-            // Call the function on page load to set the initial count
-            updateNotificationCount();
+        // Update the notification count based on the number of list items
+        function updateNotificationCount() {
+            const count = notificationDropdown.querySelectorAll('li').length;
+            notificationCount.textContent = count;
+            notificationCount.style.display = count > 0 ? 'block' : 'none';
+        }
 
-            // Profile dropdown functionality
-            const profileDropdownContainer = document.getElementById('profile-dropdown-container');
-            const profileDropdownMenu = document.getElementById('profile-dropdown-menu');
+        // Call the function on page load to set the initial count
+        updateNotificationCount();
 
-            profileDropdownContainer.addEventListener('click', () => {
-                profileDropdownMenu.classList.toggle('is-active');
-            });
+        // Profile dropdown functionality
+        const profileDropdownContainer = document.getElementById('profile-dropdown-container');
+        const profileDropdownMenu = document.getElementById('profile-dropdown-menu');
 
-            // Sidebar collapse/expand functionality
-            const sidebarToggle = document.getElementById('sidebar-toggle');
-            const sidebar = document.getElementById('sidebar');
+        profileDropdownContainer.addEventListener('click', () => {
+            profileDropdownMenu.classList.toggle('is-active');
+        });
 
-            sidebarToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('is-collapsed');
-            });
+        // Sidebar collapse/expand functionality
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebar = document.getElementById('sidebar');
 
-            // =========================================================
-            // START OF CORRECTED SEARCH SCRIPT
-            // =========================================================
-            const searchInput = document.getElementById('search-input');
-            const searchResults = document.getElementById('search-results');
-            let searchTimeout;
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('is-collapsed');
+        });
 
-            // Function to perform the search
-            function performSearch(query) {
-                if (query.length > 2) { // Only search after 2 or more characters
-                    fetch(`/search/?query=${query}`) // Use your defined search URL
-                        .then(response => response.json())
-                        .then(data => {
-                            renderResults(data.results);
-                        })
-                        .catch(error => console.error('Error fetching search results:', error));
-                } else {
-                    searchResults.innerHTML = '';
-                }
+        // =========================================================
+        // START OF CORRECTED SEARCH SCRIPT
+        // =========================================================
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
+        let searchTimeout;
+
+        // Function to perform the search
+        function performSearch(query) {
+            if (query.length > 2) { // Only search after 2 or more characters
+                fetch(`/search/?query=${query}`) // Use your defined search URL
+                    .then(response => response.json())
+                    .then(data => {
+                        renderResults(data.results);
+                    })
+                    .catch(error => console.error('Error fetching search results:', error));
+            } else {
+                searchResults.innerHTML = '';
             }
+        }
 
-            // Listen for user input as they type
-            searchInput.addEventListener('input', function() {
+        // Listen for user input as they type
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            const query = this.value;
+            searchTimeout = setTimeout(() => {
+                performSearch(query);
+            }, 300); // 300ms delay for live search
+        });
+
+        // Listen for the "Enter" key press to perform an immediate search
+        searchInput.addEventListener('keydown', function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
                 clearTimeout(searchTimeout);
                 const query = this.value;
-                searchTimeout = setTimeout(() => {
-                    performSearch(query);
-                }, 300); // 300ms delay for live search
-            });
-
-            // Listen for the "Enter" key press to perform an immediate search
-            searchInput.addEventListener('keydown', function(event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        clearTimeout(searchTimeout);
-        const query = this.value;
-        performSearch(query);
-    }
-});
-
-            function renderResults(results) {
-                searchResults.innerHTML = ''; // Clear previous results
-                if (results.length > 0) {
-                    const ul = document.createElement('ul');
-                    results.forEach(item => {
-                        const li = document.createElement('li');
-                        li.innerHTML = `<a href="${item.url}" class="search-result-item">
-                                            <span class="search-result-label">${item.label}</span>
-                                            <span class="search-result-type">${item.type}</span>
-                                        </a>`;
-                        ul.appendChild(li);
-                    });
-                    searchResults.appendChild(ul);
-                } else {
-                    searchResults.innerHTML = '<div class="no-results">No results found.</div>';
-                }
+                performSearch(query);
             }
-            
-            // =========================================================
-            // END OF CORRECTED SEARCH SCRIPT
-            // =========================================================
-            
-            // These variables will be passed from the Django view.
-            let salesLabels = [];
-            let salesDataValues = [];
-            let productLabels = [];
-            let productDataValues = [];
+        });
 
-            try {
-                salesLabels = JSON.parse('{{ sales_labels_json|safe }}');
-            } catch (e) {
-                console.error("Failed to parse sales labels JSON. Assuming empty array.", e);
+        function renderResults(results) {
+            searchResults.innerHTML = ''; // Clear previous results
+            if (results.length > 0) {
+                const ul = document.createElement('ul');
+                results.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a href="${item.url}" class="search-result-item">
+                                        <span class="search-result-label">${item.label}</span>
+                                        <span class="search-result-type">${item.type}</span>
+                                    </a>`;
+                    ul.appendChild(li);
+                });
+                searchResults.appendChild(ul);
+            } else {
+                searchResults.innerHTML = '<div class="no-results">No results found.</div>';
             }
+        }
+        
+        // =========================================================
+        // END OF CORRECTED SEARCH SCRIPT
+        // =========================================================
+        
+        // --- CHART DATA PARSING ---
+        let salesLabels = [];
+        let salesDataValues = [];
+        let productLabels = [];
+        let productDataValues = [];
+        let topProductsLabels = [];
+        let topProductsDataValues = []; // **NEW**
 
-            try {
-                salesDataValues = JSON.parse('{{ sales_data_json|safe }}');
-            } catch (e) {
-                console.error("Failed to parse sales data JSON. Assuming empty array.", e);
-            }
+        try {
+            salesLabels = JSON.parse('{{ sales_labels_json|safe }}');
+        } catch (e) {
+            console.error("Failed to parse sales labels JSON. Assuming empty array.", e);
+        }
 
-            try {
-                productLabels = JSON.parse('{{ product_labels_json|safe }}');
-            } catch (e) {
-                console.error("Failed to parse product labels JSON. Assuming empty array.", e);
-            }
+        try {
+            salesDataValues = JSON.parse('{{ sales_data_json|safe }}');
+        } catch (e) {
+            console.error("Failed to parse sales data JSON. Assuming empty array.", e);
+        }
 
-            try {
-                productDataValues = JSON.parse('{{ product_data_json|safe }}');
-            } catch (e) {
-                console.error("Failed to parse product data JSON. Assuming empty array.", e);
-            }
+        try {
+            productLabels = JSON.parse('{{ product_labels_json|safe }}');
+        } catch (e) {
+            console.error("Failed to parse product labels JSON. Assuming empty array.", e);
+        }
 
-            const salesData = {
-                labels: salesLabels,
-                datasets: [{
-                    label: 'Sales (K)',
-                    data: salesDataValues,
-                    backgroundColor: 'rgba(85, 20, 180, 0.6)',
-                    borderColor: 'rgba(85, 20, 180, 1)',
-                    borderWidth: 1
-                }]
-            };
+        try {
+            productDataValues = JSON.parse('{{ product_data_json|safe }}');
+        } catch (e) {
+            console.error("Failed to parse product data JSON. Assuming empty array.", e);
+        }
+        
+        // **NEW**: Parsing for Top Products
+        try {
+            topProductsLabels = JSON.parse('{{ top_products_labels_json|safe }}');
+        } catch (e) {
+            console.error("Failed to parse top products labels JSON. Assuming empty array.", e);
+        }
 
-            const productData = {
-                labels: productLabels,
-                datasets: [{
-                    label: 'Product Categories',
-                    data: productDataValues,
-                    backgroundColor: [
-                        '#6bb8ff',
-                        '#38e1b9',
-                        '#ff6b6b',
-                        '#c0392b',
-                        '#f1c40f'
-                    ],
-                    hoverOffset: 4
-                }]
-            };
+        try {
+            topProductsDataValues = JSON.parse('{{ top_products_data_json|safe }}');
+        } catch (e) {
+            console.error("Failed to parse top products data JSON. Assuming empty array.", e);
+        }
 
-            const salesConfig = {
-                type: 'bar',
-                data: salesData,
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+
+        // --- CHART DATA DEFINITIONS ---
+
+        const salesData = {
+            labels: salesLabels,
+            datasets: [{
+                label: 'Sales (K)',
+                data: salesDataValues,
+                backgroundColor: 'rgba(85, 20, 180, 0.6)',
+                borderColor: 'rgba(85, 20, 180, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        const productData = {
+            labels: productLabels,
+            datasets: [{
+                label: 'Product Categories',
+                data: productDataValues,
+                backgroundColor: [
+                    '#6bb8ff',
+                    '#38e1b9',
+                    '#ff6b6b',
+                    '#c0392b',
+                    '#f1c40f'
+                ],
+                hoverOffset: 4
+            }]
+        };
+        
+        // **NEW**: Data for Top Products Chart
+        const topProductsData = {
+            labels: topProductsLabels,
+            datasets: [{
+                label: 'Total Revenue (K)',
+                data: topProductsDataValues,
+                backgroundColor: [
+                    '#FF6384', // Red
+                    '#36A2EB', // Blue
+                    '#FFCE56', // Yellow
+                    '#4BC0C0', // Teal
+                    '#9966FF'  // Purple
+                ],
+                borderColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#4BC0C0',
+                    '#9966FF'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+
+        // --- CHART CONFIGURATIONS ---
+
+        const salesConfig = {
+            type: 'bar',
+            data: salesData,
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
-            };
+            }
+        };
 
-            const productConfig = {
-                type: 'pie',
-                data: productData,
-                options: {
-                    responsive: true,
+        const productConfig = {
+            type: 'pie',
+            data: productData,
+            options: {
+                responsive: true,
+            }
+        };
+        
+        // **NEW**: Configuration for Top Products Chart
+        const topProductsConfig = {
+            type: 'bar', // Use 'bar' type with 'indexAxis: 'y'' for horizontal
+            data: topProductsData,
+            options: {
+                indexAxis: 'y', // Makes it a horizontal bar chart
+                responsive: true,
+                scales: {
+                    x: { // X-axis is now the value axis
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Revenue (K)'
+                        }
+                    }
+                },
+                legend: {
+                    display: false
                 }
-            };
+            }
+        };
 
-            const salesChart = new Chart(
-                document.getElementById('sales-chart'),
-                salesConfig
-            );
 
-            const productChart = new Chart(
-                document.getElementById('product-chart'),
-                productConfig
-            );
-        });
-    </script>
+        // --- CHART INSTANTIATION ---
+
+        const salesChart = new Chart(
+            document.getElementById('sales-chart'),
+            salesConfig
+        );
+
+        const productChart = new Chart(
+            document.getElementById('product-chart'),
+            productConfig
+        );
+        
+        // **NEW**: Instantiation for Top Products Chart
+        const topProductsChart = new Chart(
+            document.getElementById('top-products-chart'),
+            topProductsConfig
+        );
+    });
+</script>
 </body>
 </html>

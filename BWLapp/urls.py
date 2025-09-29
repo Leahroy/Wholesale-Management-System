@@ -95,10 +95,18 @@ urlpatterns = [
     path('reports/', reports_view, name='reports'),
 
     # Stock URLs
+ #report urls
+    path('reports/', reports_view, name='reports'),
+
+    # Stock URLs
     path('stocks/', StockListView.as_view(), name='stock-list'),
     path('stock/create/', StockCreateView.as_view(), name='stock-create'),
-    path('stocks/<int:pk>/update/', StockUpdateView.as_view(), name='stock-update'),
-    path('stocks/<int:pk>/delete/', StockDeleteView.as_view(), name='stock-delete'),
+    
+    # 🎯 FIX 1: Change name='stock-update' to name='stocks-update'
+    path('stocks/<int:pk>/update/', StockUpdateView.as_view(), name='stocks-update'), 
+    
+    # 🎯 FIX 2: Change name='stock-delete' to name='stocks-delete'
+    path('stocks/<int:pk>/delete/', StockDeleteView.as_view(), name='stocks-delete'), 
 ]
 
 if settings.DEBUG:

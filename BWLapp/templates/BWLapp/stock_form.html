@@ -17,23 +17,42 @@
         <div class="form-group">
             <label for="{{ form.product.id_for_label }}" class="form-label">Product</label>
             {{ form.product }}
+            {% if form.product.errors %}
+                <div class="form-error">{{ form.product.errors }}</div>
+            {% endif %}
         </div>
 
         <div class="form-group">
             <label for="{{ form.package_type.id_for_label }}" class="form-label">Package Type</label>
             {{ form.package_type }}
+            {% if form.package_type.errors %}
+                <div class="form-error">{{ form.package_type.errors }}</div>
+            {% endif %}
         </div>
 
         <div class="form-group">
             <label for="{{ form.quantity.id_for_label }}" class="form-label">Quantity</label>
             {{ form.quantity }}
+            {% if form.quantity.errors %}
+                <div class="form-error">{{ form.quantity.errors }}</div>
+            {% endif %}
         </div>
 
         <div class="form-group">
             <label for="{{ form.price_per_package.id_for_label }}" class="form-label">Price per Package</label>
             {{ form.price_per_package }}
+            {% if form.price_per_package.errors %}
+                <div class="form-error">{{ form.price_per_package.errors }}</div>
+            {% endif %}
         </div>
 
+        <div class="form-group">
+            <label for="{{ form.is_available.id_for_label }}" class="form-label">Available for Sale?</label>
+            {{ form.is_available }}
+            {% if form.is_available.errors %}
+                <div class="form-error">{{ form.is_available.errors }}</div>
+            {% endif %}
+        </div>
         <div class="form-actions">
             <button type="submit" class="btn btn-success">💾 Save</button>
             <a href="{% url 'stock-list' %}" class="btn btn-secondary">❌ Cancel</a>

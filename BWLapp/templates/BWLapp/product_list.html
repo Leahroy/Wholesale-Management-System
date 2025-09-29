@@ -9,6 +9,28 @@
 <title>Products</title>
 <link rel="stylesheet" href="{% static 'BWLapp/css/product_list.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+    /* Styling to make the new Image column clean and functional */
+    .product-table th:nth-child(3),
+    .product-table td:nth-child(3) {
+        width: 60px; /* Control the column width */
+        text-align: center;
+    }
+
+    .product-thumbnail {
+        width: 50px; /* Small, consistent thumbnail size */
+        height: 50px;
+        object-fit: cover; /* Ensures image isn't distorted */
+        border-radius: 4px; 
+        border: 1px solid #ddd;
+    }
+
+    .no-image-icon {
+        color: #ccc;
+        display: block;
+        margin: 0 auto;
+    }
+</style>
 </head>
 <body>
 <div class="container">
@@ -25,10 +47,9 @@
             <tr>
                 <th>Product_ID</th>
                 <th>Name</th>
+                <th>Image</th> 
                 <th>Description</th>
                 <th>Price</th>
-                <th>Available</th>
-                <!-- New: Category Column -->
                 <th>Category</th>
                 {% if is_admin %}
                 <th>Actions</th>
@@ -40,10 +61,17 @@
             <tr class="product-row">
                 <td>{{ product.product_id }}</td> 
                 <td>{{ product.name }}</td>
+                
+                <td class="product-image-cell">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-thumbnail">
+                    {% else %}
+                        <i class="fas fa-image fa-2x no-image-icon" title="No Image"></i>
+                    {% endif %}
+                </td>
+                
                 <td>{{ product.description|default:"-" }}</td>
-                <td>K{{ product.cost_price|floatformat:2 }}</td>
-                <td>{{ product.is_available|yesno:"Yes,No" }}</td>
-                <!-- New: Category Data -->
+                <td>K{{ product.selling_price|floatformat:2 }}</td>
                 <td>{{ product.category.name|default:"-" }}</td>
                 {% if is_admin %}
                 <td>
@@ -60,8 +88,7 @@
             </tr>
             {% empty %}
             <tr>
-                <!-- New: Updated colspan to account for the new column -->
-                <td colspan="{% if is_admin %}9{% else %}8{% endif %}" class="no-products-found">No products found.</td>
+                <td colspan="{% if is_admin %}8{% else %}7{% endif %}" class="no-products-found">No products found.</td>
             </tr>
             {% endfor %}
         </tbody>

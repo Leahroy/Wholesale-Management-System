@@ -2,201 +2,201 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reports Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link rel="stylesheet" href="{% static 'BWLapp/css/reports.css' %}">
 </head>
 <body>
 
 <div class="container">
-    <div class="header">
-        <h1>Comprehensive Business Reports</h1>
-        <button class="print-btn" onclick="window.print()">Print / Download PDF</button>
-    </div>
+    <div class="header">
+        <h1>Comprehensive Business Reports</h1>
+        <button class="print-btn" onclick="window.print()">Print / Download PDF</button>
+    </div>
 
-    <div class="tabs">
-        <button class="tab-button active" onclick="openTab('sales')">Sales Reports</button>
-        <button class="tab-button" onclick="openTab('inventory')">Inventory Reports</button>
-        <button class="tab-button" onclick="openTab('customers')">Customer Reports</button>
-        <button class="tab-button" onclick="openTab('financial')">Financial Reports</button>
+    <div class="tabs">
+        <button class="tab-button active" onclick="openTab('sales')">Sales Reports</button>
+        <button class="tab-button" onclick="openTab('inventory')">Inventory Reports</button>
+        <button class="tab-button" onclick="openTab('customers')">Customer Reports</button>
+        <button class="tab-button" onclick="openTab('financial')">Financial Reports</button>
         <button class="tab-button" onclick="openTab('operational')">Operational & Audit</button>
-    </div>
+    </div>
 
-    <div id="sales" class="tab-content active">
-        <div class="report-section">
-            <h2>Sales Over Time</h2>
-            <div style="width: 80%; margin: auto;">
-                <select id="time-range-select" class="time-range-selector" onchange="window.location.href='?time_range=' + this.value">
-                    <option value="monthly" {% if time_range == 'monthly' %}selected{% endif %}>Last 12 Months</option>
-                    <option value="daily" {% if time_range == 'daily' %}selected{% endif %}>Last 30 Days</option>
-                    <option value="annual" {% if time_range == 'annual' %}selected{% endif %}>Last 3 Years</option>
-                </select>
-                <canvas id="salesChart"></canvas>
-            </div>
-        </div>
+    <div id="sales" class="tab-content active">
+        <div class="report-section">
+            <h2>Sales Over Time</h2>
+            <div style="width: 80%; margin: auto;">
+                <select id="time-range-select" class="time-range-selector" onchange="window.location.href='?time_range=' + this.value">
+                    <option value="monthly" {% if time_range == 'monthly' %}selected{% endif %}>Last 12 Months</option>
+                    <option value="daily" {% if time_range == 'daily' %}selected{% endif %}>Last 30 Days</option>
+                    <option value="annual" {% if time_range == 'annual' %}selected{% endif %}>Last 3 Years</option>
+                </select>
+                <canvas id="salesChart"></canvas>
+            </div>
+        </div>
 
-        <div class="report-grid">
-            <div class="report-card">
-                <h2>Top Selling Products</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Revenue</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in sales_by_product %}
-                        <tr>
-                            <td>{{ item.product__name }}</td>
-                            <td>K{{ item.total_revenue|floatformat:2 }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr><td colspan="2">No products sold yet.</td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="report-card">
-                <h2>Sales by Employee</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Employee</th>
-                            <th>Total Sales</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in sales_by_employee %}
-                        <tr>
-                            <td>{{ item.processed_by__username }}</td>
-                            <td>K{{ item.total_sales|floatformat:2 }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr><td colspan="2">No sales processed yet.</td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+        <div class="report-grid">
+            <div class="report-card">
+                <h2>Top Selling Products</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Revenue</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in sales_by_product %}
+                        <tr>
+                            <td>{{ item.stock_item__product__name }}</td>
+                            <td>K{{ item.total_revenue|floatformat:2 }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="2">No products sold yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="report-card">
+                <h2>Sales by Employee</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Total Sales</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in sales_by_employee %}
+                        <tr>
+                            <td>{{ item.processed_by__username }}</td>
+                            <td>K{{ item.total_sales|floatformat:2 }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="2">No sales processed yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-    <div id="inventory" class="tab-content">
-        <div class="report-grid">
-            <div class="report-card">
-                <h2>Low Stock Inventory</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>In Stock</th>
-                            <th>Threshold</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for product in low_stock_products %}
-                        <tr>
-                            <td>{{ product.name }}</td>
-                            <td>{{ product.stock_quantity }}</td>
-                            <td>{{ product.low_stock_threshold }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr><td colspan="3">All products are well-stocked.</td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+    <div id="inventory" class="tab-content">
+        <div class="report-grid">
+            <div class="report-card">
+                <h2>Low Stock Inventory</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>In Stock</th>
+                            <th>Threshold</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in low_stock_products %}
+                        <tr>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.total_quantity|default:0 }}</td>
+                            <td>{{ low_stock_threshold }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="3">All products are well-stocked.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
-            <div class="report-card">
-                <h2>Dead Stock Report</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Stock</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for product in dead_stock %}
-                        <tr>
-                            <td>{{ product.name }}</td>
-                            <td>{{ product.stock_quantity }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr><td colspan="2">No dead stock found.</td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <div class="report-section">
-            <h2>Stock Valuation</h2>
-            <p><strong>Total Value (at Cost):</strong> K{{ stock_valuation.total_at_cost|floatformat:2 }}</p>
-            <p><strong>Total Value (at Selling Price):</strong> K{{ stock_valuation.total_at_selling_price|floatformat:2 }}</p>
-        </div>
-    </div>
+            <div class="report-card">
+                <h2>Dead Stock Report</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in dead_stock %}
+                        <tr>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.total_quantity|default:0 }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="2">No dead stock found.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="report-section">
+            <h2>Stock Valuation</h2>
+            <p><strong>Total Value (at Cost):</strong> K{{ stock_valuation.total_at_cost|floatformat:2 }}</p>
+            <p><strong>Total Value (at Selling Price):</strong> K{{ stock_valuation.total_at_selling_price|floatformat:2 }}</p>
+        </div>
+    </div>
 
-    <div id="customers" class="tab-content">
-        <div class="report-grid">
-            <div class="report-card">
-                <h2>Top Customers by Revenue</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Customer Name</th>
-                            <th>Total Spent</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for customer in top_customers %}
-                        <tr>
-                            <td>{{ customer.name }}</td>
-                            <td>K{{ customer.total_spent|floatformat:2 }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+    <div id="customers" class="tab-content">
+        <div class="report-grid">
+            <div class="report-card">
+                <h2>Top Customers by Revenue</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer Name</th>
+                            <th>Total Spent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for customer in top_customers %}
+                        <tr>
+                            <td>{{ customer.name }}</td>
+                            <td>K{{ customer.total_spent|floatformat:2 }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
-            <div class="report-card">
-                <h2>Outstanding Customer Balances</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Customer</th>
-                            <th>Order ID</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for order in outstanding_balances %}
-                        <tr>
-                            <td>{{ order.customer.name }}</td>
-                            <td>#{{ order.order_id }}</td>
-                            <td>K{{ order.total_order_value|floatformat:2 }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr><td colspan="3">No outstanding balances.</td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+            <div class="report-card">
+                <h2>Outstanding Customer Balances</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Order ID</th>
+                            <th>Balance Due</th> </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in outstanding_balances %}
+                        <tr>
+                            <td>{{ order.customer.name }}</td>
+                            <td>#{{ order.order_id }}</td>
+                            <td>K{{ order.total_order_value|floatformat:2 }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="3">No outstanding balances.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-    <div id="financial" class="tab-content">
-        <div class="report-grid">
-            <div class="report-card">
-                <h2>Profit & Loss Summary</h2>
-                <p><strong>Total Revenue:</strong> K{{ total_revenue|floatformat:2 }}</p>
-                <p><strong>Total Cost of Goods Sold:</strong> K{{ total_cogs|floatformat:2 }}</p>
-                <h3><strong>Net Profit:</strong> K{{ total_profit|floatformat:2 }}</h3>
-            </div>
-        </div>
-    </div>
+    <div id="financial" class="tab-content">
+        <div class="report-grid">
+            <div class="report-card">
+                <h2>Profit & Loss Summary</h2>
+                <p><strong>Total Revenue:</strong> K{{ total_revenue|floatformat:2 }}</p>
+                <p><strong>Total Cost of Goods Sold:</strong> K{{ total_cogs|floatformat:2 }}</p>
+                <h3><strong>Net Profit:</strong> K{{ total_profit|floatformat:2 }}</h3>
+            </div>
+        </div>
+    </div>
     
     <div id="operational" class="tab-content">
         <div class="report-section">
@@ -232,69 +232,92 @@
     </div>
 
 <script>
-    // Tab switching functionality
-    function openTab(tabName) {
-        var i, tabContent, tabButtons;
-        tabContent = document.getElementsByClassName("tab-content");
-        for (i = 0; i < tabContent.length; i++) {
-            tabContent[i].style.display = "none";
-        }
-        tabButtons = document.getElementsByClassName("tab-button");
-        for (i = 0; i < tabButtons.length; i++) {
-            tabButtons[i].className = tabButtons[i].className.replace(" active", "");
-        }
-        document.getElementById(tabName).style.display = "block";
-        event.currentTarget.className += " active";
-    }
+    // Tab switching functionality
+    function openTab(tabName) {
+        var i, tabContent, tabButtons;
+        tabContent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabContent.length; i++) {
+            tabContent[i].style.display = "none";
+        }
+        tabButtons = document.getElementsByClassName("tab-button");
+        for (i = 0; i < tabButtons.length; i++) {
+            tabButtons[i].className = tabButtons[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        // Check if event is defined before accessing currentTarget
+        if (event && event.currentTarget) {
+            event.currentTarget.className += " active";
+        } else {
+             // Handle initial load case or unexpected behavior by setting the default tab to 'sales'
+             document.querySelector('.tab-button').className += " active";
+        }
+    }
 
-    // Set the initial active tab
-    document.addEventListener("DOMContentLoaded", function() {
-        // Find the button that corresponds to the active tab from URL or default
-        const timeRange = new URLSearchParams(window.location.search).get('time_range') || 'monthly';
-        const selectElement = document.getElementById('time-range-select');
-        selectElement.value = timeRange;
-    });
+    // Set the initial active tab
+    document.addEventListener("DOMContentLoaded", function() {
+        // Find the button that corresponds to the active time range from URL or default
+        const timeRange = new URLSearchParams(window.location.search).get('time_range') || 'monthly';
+        const selectElement = document.getElementById('time-range-select');
+        if (selectElement) {
+             selectElement.value = timeRange;
+        }
 
-    // Chart.js initialization for Sales Chart
-    const salesLabels = JSON.parse('{{ sales_labels_json|safe }}');
-    const salesData = JSON.parse('{{ sales_data_json|safe }}');
-    const ctx = document.getElementById('salesChart').getContext('2d');
-    const salesChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: salesLabels,
-            datasets: [{
-                label: 'Total Sales ($)',
-                data: salesData,
-                backgroundColor: 'rgba(0, 123, 255, 0.2)',
-                borderColor: 'rgba(0, 123, 255, 1)',
-                borderWidth: 2,
-                tension: 0.1,
-                fill: true,
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Total Sales ($)'
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Time Period'
-                    }
-                }
-            }
-        }
-    });
+        // Set the initial active tab content based on a URL parameter if present, otherwise default to 'sales'
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeTab = urlParams.get('tab') || 'sales';
+        
+        // Use the openTab function to set the state
+        const initialButton = document.querySelector(`.tab-button[onclick*="'${activeTab}'"]`);
+        if (initialButton) {
+            // Simulate a click or manually apply active state and display
+            openTab(activeTab);
+            initialButton.className += " active";
+        } else {
+             // Default to 'sales' tab
+             openTab('sales');
+             document.querySelector('.tab-button').className += " active";
+        }
 
-    // Handle "Print / Download PDF" (relies on browser functionality)
-    // The CSS includes print-specific styles to make the output look clean.
+    });
+
+    // Chart.js initialization for Sales Chart
+    // Note: The variable names are correct based on the Django view context
+    const salesLabels = JSON.parse('{{ sales_labels_json|safe }}');
+    const salesData = JSON.parse('{{ sales_data_json|safe }}');
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    const salesChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: salesLabels,
+            datasets: [{
+                label: 'Total Sales (K)', // Changed from $ to K based on context
+                data: salesData,
+                backgroundColor: 'rgba(0, 123, 255, 0.2)',
+                borderColor: 'rgba(0, 123, 255, 1)',
+                borderWidth: 2,
+                tension: 0.1,
+                fill: true,
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Total Sales (K)' // Changed from $ to K
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Time Period'
+                    }
+                }
+            }
+        }
+    });
 </script>
 
 </body>
