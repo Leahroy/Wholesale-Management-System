@@ -1,10 +1,4 @@
-#!/bin/bash
-
-echo "🔄 Applying migrations..."
+#!/usr/bin/env bash
 python manage.py migrate --noinput
-
-echo "📁 Collecting static files..."
 python manage.py collectstatic --noinput
-
-echo "🚀 Starting server..."
-gunicorn my_webapp.wsgi:application --bind 0.0.0.0:$PORT
+gunicorn my_webapp.wsgi:application
