@@ -1,153 +1,165 @@
-/*
-    Refined CSS for a modern, responsive product form.
-    - Uses CSS variables for a maintainable and consistent color scheme.
-    - Enhances accessibility with a focus-visible outline.
-    - Improves readability with logical property grouping.
-*/
+/* Product Form CSS - Professional Business Aesthetic */
 
-:root {
-    /* Color Palette */
-    --color-background: #f0f4f8; /* A very light blue-gray */
-    --color-surface: #ffffff;
-    --color-text-primary: #1e293b; /* A dark, readable gray-blue */
-    --color-text-secondary: #475569; /* A slightly lighter gray for labels */
-    --color-border: #e2e8f0;
-    --color-accent: #3b82f6; /* A clean, professional blue */
-    --color-success: #10b981; /* A friendly green */
-    --color-danger: #ef4444; /* A clear red for errors */
-}
+/* ------------------------------------------------------------------- */
+/* 1. Base Structure & Typography */
+/* ------------------------------------------------------------------- */
 
 body {
     font-family: 'Inter', sans-serif;
-    background-color: var(--color-background);
+    background-color: #f4f6f9; /* Light, neutral background */
     margin: 0;
     padding: 0;
-    line-height: 1.6;
 }
 
 .form-container {
-    max-width: 600px;
-    margin: 3rem auto;
-    padding: 2.5rem;
-    background-color: var(--color-surface);
-    border-radius: 12px;
-    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    max-width: 650px;
+    margin: 4rem auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle, professional shadow */
+    border-top: 5px solid #0056b3; /* Dark Blue accent on top */
 }
 
 .form-title {
-    font-size: 2.25rem;
+    font-size: 1.8rem;
     font-weight: 700;
-    margin-bottom: 2rem;
-    color: var(--color-text-primary);
-    text-align: center;
+    margin-bottom: 1.8rem;
+    color: #343a40; /* Darker text for professionalism */
+    text-align: left; /* Align left for a document feel */
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 15px;
 }
 
+/* ------------------------------------------------------------------- */
+/* 2. Form Fields & Labels */
+/* ------------------------------------------------------------------- */
+
 .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
 }
 
 .form-label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: var(--color-text-secondary);
+    color: #495057;
+    font-size: 0.95rem;
 }
 
-.form-input,
-.form-select,
-.form-textarea {
+/* Input, Textarea, and Select Styling */
+.form-group input,
+.form-group textarea,
+.form-group select {
     width: 100%;
-    padding: 0.75rem;
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px; /* Slightly less rounded */
     box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
     font-size: 1rem;
-    color: var(--color-text-primary);
-    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    font-family: 'Inter', sans-serif;
+    color: #495057;
 }
 
-.form-input:focus,
-.form-select:focus,
-.form-textarea:focus {
-    border-color: var(--color-accent);
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: #0056b3; /* Accent color on focus */
+    outline: 0;
+    box-shadow: 0 0 0 0.15rem rgba(0, 86, 179, 0.25); /* Teal shadow */
 }
 
-/* Accessible focus outline for keyboard navigation */
-.form-input:focus-visible,
-.form-select:focus-visible,
-.form-textarea:focus-visible {
-    outline: 3px solid var(--color-accent);
-    outline-offset: 2px;
+/* Category Dropdown Specific Arrow Styling */
+.form-group select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23495057'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+    background-size: 0.7rem auto;
+    padding-right: 2.2rem;
+    cursor: pointer;
 }
 
-/* Custom styles for error messages from Django's form validation */
+
+/* ------------------------------------------------------------------- */
+/* 3. Messages & Errors */
+/* ------------------------------------------------------------------- */
+
 .errorlist {
-    list-style-type: none;
+    list-style: none;
     padding-left: 0;
     margin-top: 0.5rem;
-    color: var(--color-danger);
-    font-size: 0.875rem;
+    color: #dc3545; /* Standard error red */
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
-/* Button Base Styles */
-.btn {
-    display: block;
-    width: 100%;
-    padding: 0.75rem 1.25rem;
+.messages {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+
+.messages li {
+    padding: 1rem;
+    border-radius: 4px;
     font-weight: 600;
-    font-size: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.messages .success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.messages .error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* ------------------------------------------------------------------- */
+/* 4. Buttons & Actions */
+/* ------------------------------------------------------------------- */
+
+.form-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e9ecef;
     text-align: center;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
     text-decoration: none;
-    border: 1px solid transparent;
-    border-radius: 8px;
+    border-radius: 4px;
+    border: none;
     cursor: pointer;
-    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s, box-shadow 0.2s;
 }
 
-.btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 10px -1px rgba(0, 0, 0, 0.15), 0 3px 6px -1px rgba(0, 0, 0, 0.08);
-}
-
-/* Specific Button Styles */
 .btn-success {
-    color: var(--color-surface);
-    background-color: var(--color-success);
-    border-color: var(--color-success);
+    background-color: #007bff; /* Primary Blue for action */
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
 }
 
 .btn-success:hover {
-    background-color: #059669; /* A darker shade of success green */
+    background-color: #0056b3;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
 }
 
 .btn-secondary {
-    color: var(--color-text-secondary);
-    background-color: var(--color-border);
-    border-color: var(--color-border);
-    margin-top: 0.5rem;
+    background-color: #6c757d;
+    color: #fff;
+    margin-left: 0.75rem;
 }
 
 .btn-secondary:hover {
-    background-color: #cbd5e0;
-}
-
-.form-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem; /* Slightly larger gap */
-}
-
-/* Desktop Styles */
-@media (min-width: 640px) {
-    .form-actions {
-        flex-direction: row;
-        gap: 1rem;
-    }
-
-    .btn {
-        width: auto;
-    }
+    background-color: #5a6268;
 }

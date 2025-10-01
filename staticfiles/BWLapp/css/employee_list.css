@@ -133,3 +133,30 @@ body {
     transition: all 0.2s ease;
     border: none;
 }
+/* --- Dashboard Button Styling --- */
+.dashboard-link-wrapper {
+    margin-top: 30px;
+    text-align: right; /* Changed from 'center' to 'right' to move the button to the far right */
+}
+
+.back-to-dashboard-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 25px;
+    background-color: #4F46E5; /* Example: Indigo color for primary action */
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 100px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.back-to-dashboard-btn i {
+    margin-right: 8px;
+}
+
+.back-to-dashboard-btn:hover {
+    background-color: #4338CA; /* Darker indigo on hover */
+    transform: translateY(-1px);
+}

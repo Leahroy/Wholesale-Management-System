@@ -19,17 +19,30 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 12px 30px;
-    background-color: #5514b4;
-    border-bottom: 2px solid #4a0fa1;
+    background-color: rgb(43, 43, 170);
+    border-bottom: 2px solid hsl(264, 83%, 35%);
 }
 
-.logo img {
-    height: 80px; 
-    width: 80px; 
-    object-fit: cover; 
-    border-radius: 50%;
-    border: 2px solid #fff; 
-    transition: transform 0.3s ease;
+@font-face {
+    font-family: 'Bauhaus 93';
+    src: url('path/to/bauhaus93.woff2') format('woff2'),
+         url('path/to/bauhaus93.woff') format('woff');
+}
+
+.header .logo {
+    /* Apply the custom font */
+    font-family: 'Bodoni MT Black';
+    
+    /* Styling to match the image */
+    font-size: 1rem; /* Adjust the size to fit your header */
+    font-weight: normal; /* Bauhaus 93 is a single weight */
+    text-transform: uppercase;
+    letter-spacing: -2px; /* Adjust letter spacing for a tighter fit, like in the image */
+    
+    /* Layout and color */
+    color: white;
+    text-decoration: none;
+    font-size: large;
 }
 .logo img:hover { transform: scale(1.05); }
 
@@ -42,68 +55,82 @@ body {
 .nav-item:hover { background-color: #ffd700; color: #5514b4; }
 .nav-item.active { border-bottom: 2px solid #ffd700; }
 
+.welcome-section {
+    background: #f8f9fa;
+    padding: 40px 20px;
+    text-align: center;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.welcome-section .welcome-container {
+    max-width: 900px;
+    margin: 0 auto;
+    
+}
+
+.welcome-section h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+    
+}
+
+.welcome-section p {
+    font-size: 1.2rem;
+    color: #555;
+    line-height: 1.6;
+    font-family: "Script MT Bold", cursive;
+    font-size: 30;
+}
+
+
 .login-form-indicator {
-    padding: 8px 18px; border-radius: 5px; font-weight: 600;
-    text-decoration: none; background-color: #ffd700; color: #5514b4;
+    padding: 8px 18px; 
+    border-radius: 100px; 
+    font-weight: 600;
+    text-decoration: none; 
+    background-color: #ffd700; 
+    color: #5514b4;
     transition: 0.3s ease;
+    
 }
 .login-form-indicator:hover { background-color: #ffffff; color: #5514b4; border: 1px solid #5514b4; }
 
 /* --- Main Content & Hero Banner Section --- */
 .main-content {
     flex-grow: 1;
-    /* We remove most styling from main-content to let hero-banner-section take over */
     padding: 0;
     margin: 0;
-    background-color: #f0f2f5; /* Maintain body background for areas outside specific sections */
+    background-color: #f0f2f5; 
     border: none;
 }
 
 .hero-banner-section {
-    padding: 20px; /* Padding around the entire banner section */
-    background-color: #f0f2f5; /* Match body background or slightly different if desired */
-    display: flex; /* Use flex to center the container */
+    position: relative; /* Needed for absolute positioning of controls/indicators */
+    width: 100%; /* Stretches to full width of its parent */
+    height: 500px; /* Fixed height for the carousel */
+    overflow: hidden; /* Ensures images don't overflow */
+    display: flex; /* Helps in centering controls if needed, but primarily for content */
     justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically (if height allows) */
+    align-items: center; /* Center vertically (if content is smaller) */
+    background-color: #ffffff; /* Fallback background */
+    /* REMOVED: padding, border, box-shadow from previous .hero-banner-container */
 }
 
-.hero-banner-container {
-    position: relative;
-    width: 90%; /* Adjust width to fit within your conceptual border */
-    max-width: 1200px; /* Max width of the entire banner */
-    height: 500px; /* Fixed height for the entire banner area */
-    background-color: #ffffff; /* White background for the main banner area */
-    border: 1px solid #ddd; /* The border around the main banner area */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Optional shadow */
-    overflow: hidden; /* Hide anything outside this container */
-    display: flex; /* Use flex inside to position carousel and overlay */
-    justify-content: space-between; /* Space out the carousel and overlay content */
-    align-items: center; /* Vertically align items */
-    padding: 10px; /* Padding inside the banner container */
-    gap: 10px; /* Space between carousel and overlay content */
-}
-
-
-/* Image Carousel within the Hero Banner Container */
-.image-carousel {
-    position: relative;
-    width: 60%; /* Adjust width of the carousel within the banner */
-    height: 100%; /* Take full height of its parent container */
-    overflow: hidden;
-    border: 1px solid #eee; /* Optional: subtle border around the image part */
-}
-
+/* Image Carousel Slides within the Hero Banner Section */
+/* The carousel-slides now effectively acts as the container filling the hero-banner-section */
 .carousel-slides {
     position: relative;
-    width: 100%;
-    height: 100%;
+    width: 100%; /* Take full width of hero-banner-section */
+    height: 100%; /* Take full height of hero-banner-section */
 }
 
 .carousel-slide {
     position: absolute;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /* Ensures images cover the area without distortion */
     opacity: 0;
     transition: opacity 1s ease-in-out;
 }
@@ -135,7 +162,7 @@ body {
 /* Carousel Indicators (Dots) */
 .carousel-indicators {
     position: absolute;
-    bottom: 10px; /* Adjusted to be inside the carousel's bottom */
+    bottom: 10px; 
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -148,32 +175,9 @@ body {
 }
 .indicator.active { background-color: #007bff; }
 
-/* Hero Overlay Content (e.g., "50", "Happy Independence Anniversary") */
-.hero-overlay-content {
-    width: 40%; /* Adjust width for the overlay content */
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background-color: #f9f9f9; /* Background for this side if needed, or transparent */
-    padding: 20px;
-    box-sizing: border-box; /* Include padding in width/height */
-}
+/* REMOVED .hero-overlay-content as per request */
+/* .hero-overlay-content { ... } */
 
-.hero-overlay-content .overlay-logo {
-    max-width: 80%; /* Adjust size of overlay logo */
-    height: auto;
-    margin-bottom: 20px;
-}
-
-.hero-overlay-content .overlay-text {
-    font-size: 1.8em;
-    font-weight: bold;
-    color: #333;
-    /* Add any specific styling for the text */
-}
 
 /* --- Content Below Carousel --- */
 .content-below-carousel {
@@ -182,11 +186,21 @@ body {
     padding: 0 20px;
 }
 
-.info-grid-section { text-align: center; margin-bottom: 60px; }
-.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+.info-grid-section {
+    text-align: center; 
+    margin-bottom: 60px; 
+}
+.info-grid { 
+    display: grid; 
+    grid-template-columns: 
+    repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 30px; }
 .info-card {
-    background-color: #fff; padding: 30px; border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); transition: transform 0.3s ease;
+    background-color: #fff; 
+    padding: 30px; 
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); 
+    transition: transform 0.3s ease;
 }
 .info-card:hover { transform: translateY(-5px); }
 .info-card i { font-size: 3em; color: #007bff; margin-bottom: 20px; }
@@ -194,21 +208,31 @@ body {
 .info-card p { color: #666; }
 
 .cta-section {
-    text-align: center; background-color: #f8f9fa;
-    padding: 60px 20px; border-radius: 8px; margin-bottom: 40px;
+    text-align: center; 
+    background-color: #f8f9fa;
+    padding: 60px 20px; 
+    border-radius: 8px; 
+    margin-bottom: 40px;
 }
 .cta-section h2 { font-size: 2em; margin-bottom: 15px; }
 .cta-section p { font-size: 1.1em; color: #555; margin-bottom: 30px; }
 .cta-button {
-    display: inline-block; padding: 15px 30px; background-color: #007bff;
-    color: white; text-decoration: none; font-size: 1.1em; border-radius: 5px;
+    display: inline-block; 
+    padding: 15px 30px; 
+    background-color: #007bff;
+    color: white; 
+    text-decoration: none; 
+    font-size: 1.1em; 
+    border-radius: 5px;
     transition: background-color 0.3s ease;
 }
 .cta-button:hover { background-color: #0056b3; }
 
 /* --- Footer Styles (No Changes) --- */
 .footer {
-    background-color: #5514b4; color: #fff; padding: 20px 20px 20px;
+    background-color: rgb(43, 43, 170);
+    color: #fff; 
+    padding: 20px 20px 20px;
     font-family: Arial, sans-serif;
 }
 .footer-container { display: flex; justify-content: space-between; flex-wrap: wrap; max-width: 1200px; margin: 0 auto; }
@@ -220,4 +244,179 @@ body {
 .footer-bottom {
     text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.3);
     margin-top: 20px; padding-top: 10px; font-size: 13px; color: #ddd;
+}
+
+
+/* --- Styles Moved from <style> block in homepage.html for organization --- */
+
+.featured-products-section {
+    padding: 40px 20px;
+    background-color: whitesmoke;
+    text-align: center;
+}
+.featured-products-section h2 {
+    margin-bottom: 30px;
+    font-size: 2em;
+    color: #333;
+}
+.product-showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto 40px;
+}
+.product-card {
+    background-color: #fff;
+    padding: 5px;
+    border-radius: 8px;
+    /* ADJUSTED: Shadow more visible */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); 
+    text-align: center;
+    transition: transform 0.3s ease;
+    /* Flex for alignment */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Stops content from stretching too much */
+    height: 100%;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+    /* ADJUSTED: Hover shadow more pronounced */
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2); 
+}
+.product-image {
+    width: 100%;
+    height: 180px; /* Fixed height for images */
+    object-fit: contain; 
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+.product-card h3 {
+    font-size: 1.25em;
+    color: #4a4a4a;
+    margin-bottom: 5px; /* ADJUSTED: Tighter spacing */
+    min-height: 2.5em; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+}
+.product-description {
+    color: #777;
+    margin-bottom: 5px; /* ADJUSTED: Tighter spacing */
+    min-height: 30px; 
+    /* Removed flex-grow: 1 to stop aggressive stretching */
+    display: flex; 
+    align-items: flex-start; /* Aligns text to the top of its box */
+    justify-content: center; 
+    word-break: break-word;
+}
+/* NEW: Price Styling */
+.product-price {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #28a745;
+    margin-bottom: 10px; /* ADJUSTED: Tighter spacing */
+}
+/* Style for the "Details" button (if used) or other CTAs */
+.detail-cta, .secondary-cta { 
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff; 
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+.detail-cta:hover, .secondary-cta:hover {
+    background-color: #0056b3;
+}
+/* BWLapp/css/homepage.css */
+
+/* ... (Styles before .carousel-caption) ... */
+
+/* 🌟 UPDATED MARQUEE STYLES 🌟 */
+.carousel-caption {
+    position: absolute;
+    /* 🌟 CHANGE: Use top/transform for centering 🌟 */
+    top: 50%; /* Start positioning from the middle */
+    transform: translateY(-50%); /* Move up by half its own height to center it perfectly */
+    left: 0;
+    width: 100%;
+    
+    /* Keep overflow: hidden to contain the moving text */
+    overflow: hidden; 
+    
+    background-color: rgba(43, 43, 170, 0.85); /* Dark blue with slight transparency */
+    color: white;
+    padding: 10px 0; 
+    text-align: left;
+    z-index: 10;
+}
+
+.marquee-content {
+    /* The children (spans) will now float left to sit side-by-side */
+    display: flex; 
+    width: fit-content; /* Allows the content to stretch beyond the screen width */
+    
+    white-space: nowrap; /* Ensures text stays on one line */
+    font-size: 1.1em;
+    font-weight: 500;
+    
+    /* 🌟 ADJUSTED ANIMATION TIME 🌟 */
+    animation: scroll-left 40s linear infinite; /* Increased time to 40s for a slower, smoother scroll */
+    /* Remove padding-left: 100%; now that we are using the 'flex' layout */
+}
+
+/* Define the animation: move the content from right to left */
+@keyframes scroll-left {
+    0% {
+        /* Start with the first copy positioned slightly off-screen to the right */
+        transform: translateX(0); 
+    }
+    100% {
+        /* Move exactly half the distance to cover the first copy and start the second */
+        /* Change this to match the number of times you repeated the content in HTML */
+        transform: translateX(-50%); 
+    }
+}
+
+/* CTA Section Styles */
+.cta-section {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 30px;
+    padding: 60px 20px;
+    background-color: #e9ecef;
+}
+.cta-card {
+    flex: 1;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 500px;
+}
+.new-customer-cta {
+    background-color: #ffffff;
+
+}
+.admin-login-cta {
+    background-color: #f8f9fa;
+}
+.cta-card h2 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    color: #333;
+}
+.cta-card p {
+    margin-bottom: 25px;
+    color: #6c757d;
+}
+.primary-cta {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+.primary-cta:hover {
+    background-color: #1e7e34;
 }

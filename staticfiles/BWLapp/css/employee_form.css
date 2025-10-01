@@ -1,81 +1,139 @@
-body {
-    font-family: 'Inter', sans-serif;
-    background-color: #f8f9fa;
+/* Base styles */
+body { 
+    font-family: 'Inter', sans-serif; 
+    background-color: #f8f9fa; 
 }
 
-.form-container {
-    max-width: 600px;
-    margin: 3rem auto;
-    padding: 2rem;
-    background-color: #fff;
+.form-container { 
+    max-width: 700px; 
+    margin: 3rem auto; 
+    padding: 2rem; 
+    background-color: #fff; 
+    border-radius: 12px; 
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); 
+}
+
+.form-title { 
+    font-size: 2rem; 
+    font-weight: 700; 
+    margin-bottom: 2rem; 
+    color: #212529; 
+    text-align: center; 
+}
+
+.form-group { 
+    margin-bottom: 1.5rem; 
+}
+
+.form-label { 
+    display: block; 
+    margin-bottom: 0.5rem; 
+    font-weight: 600; 
+    color: #495057; 
+}
+
+/* Input/Select Styling */
+.form-group input, 
+.form-group select, 
+.form-group textarea {
+    width: 100%; 
+    padding: 0.85rem; 
+    border: 1px solid #ced4da; 
+    border-radius: 6px; 
+    box-sizing: border-box; 
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-size: 1rem;
+}
+
+.form-group input:focus, 
+.form-group select:focus, 
+.form-group textarea:focus {
+    border-color: #198754; 
+    outline: 0; 
+    box-shadow: 0 0 0 0.15rem rgba(25, 135, 84, 0.25);
+}
+
+/* Separated Section Styling */
+.form-section {
+    border: 1px solid #e0e0e0;
+    padding: 25px;
+    margin-bottom: 30px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fcfcfc;
 }
 
-.form-title {
-    font-size: 2rem;
+.form-section h2 {
+    font-size: 1.4rem;
     font-weight: 700;
-    margin-bottom: 2rem;
-    color: #212529;
-}
-
-.form-group {
+    margin-top: 0;
     margin-bottom: 1.5rem;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #198754; 
+    color: #198754;
 }
 
-.form-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: #495057;
+.section-description {
+    color: #6c757d;
+    font-size: 0.95rem;
+    margin-top: -10px;
+    margin-bottom: 20px;
 }
 
-.form-input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    box-sizing: border-box;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+/* Error Styling */
+.errorlist { 
+    list-style: none; 
+    padding-left: 0; 
+    color: #dc3545; 
+    font-size: 0.9rem; 
+    margin-top: 5px; 
 }
 
-.form-input:focus {
-    border-color: #86b7fe;
-    outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+/* Button & Action Area Styling */
+.form-actions { 
+    margin-top: 2rem; 
+    padding-top: 1rem; 
+    border-top: 1px solid #e9ecef; 
+    text-align: right; 
 }
 
-.btn {
+.btn { 
+    padding: 0.75rem 1.5rem; 
+    font-weight: 600; 
+    text-decoration: none; 
+    border-radius: 6px; 
     display: inline-block;
-    padding: 0.75rem 1.25rem;
-    font-weight: 600;
-    text-align: center;
-    text-decoration: none;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
     cursor: pointer;
+    transition: background-color 0.2s;
 }
 
-.btn-success {
-    color: #fff;
-    background-color: #198754;
-    border-color: #198754;
+.btn-success { 
+    background-color: #198754; 
+    border-color: #198754; 
+    color: #fff; 
 }
 
-.btn-success:hover {
-    background-color: #157347;
-    border-color: #146c43;
+.btn-success:hover { 
+    background-color: #157347; 
 }
 
-.btn-secondary {
-    color: #fff;
-    background-color: #6c757d;
-    border-color: #6c757d;
-    margin-left: 0.5rem;
+.btn-secondary { 
+    background-color: #6c757d; 
+    border-color: #6c757d; 
+    color: #fff; 
+    margin-left: 0.5rem; 
 }
 
-.btn-secondary:hover {
-    background-color: #5c636a;
-    border-color: #565e64;
+/* Alert/Message Styling */
+.alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    font-weight: 600;
+}
+
+.alert-error {
+    color: #842029;
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
 }

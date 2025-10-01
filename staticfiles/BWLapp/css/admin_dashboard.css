@@ -15,7 +15,9 @@
     --card-gradient-2: linear-gradient(to right, #38e1b9, #38c1e1);
     --card-gradient-3: linear-gradient(to right, #ff6b6b, #ffa08f);
     --card-gradient-4: linear-gradient(to right, #c0392b, #e74c3c);
+    --card-gradient-5: linear-gradient(to right, #27ae60, #2ecc71); /* Green gradient */
 }
+
 
 html, body {
     height: 100%;
@@ -257,10 +259,14 @@ body {
     margin-left: 1rem;
     margin: 0 auto;
 }
+.notification-container i.fas.fa-bell {
+    font-size: 1.5rem;
+    color: #ffffff;
+}
 
 .notification-icon {
     font-size: 1.5rem;
-    color: var(--black);
+    color: #f39c12;
 }
 
 .notification-count {
@@ -371,6 +377,7 @@ h1 {
 .card-2 { background: var(--card-gradient-2); }
 .card-3 { background: var(--card-gradient-3); }
 .card-4 { background: var(--card-gradient-4); }
+.card-5 { background: var(--card-gradient-5); }
 
 .card:hover {
     transform: translateY(-5px);
