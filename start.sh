@@ -1,17 +1,10 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-# This script runs database migrations and collects static files
-# before starting the Gunicorn server.
+echo "🔄 Applying migrations..."
+python manage.py migrate --noinput
 
-# 1. Run database migrations (Fixes "column ... does not exist" errors)
-echo "Applying database migrations..."
-# Using 'exec' to ensure python is found
-exec python manage.py migrate || { echo "MIGRATION FAILED. Check logs."; exit 1; }
+echo "📁 Collecting static files..."
+python manage.py collectstatic --noinput
 
-# 2. Collect static files (Essential for CSS/JS/Images in production)
-echo "Collecting static files..."
-exec python manage.py collectstatic --noinput || { echo "COLLECTSTATIC FAILED. Check logs."; exit 1; }
-
-# 3. Start the Gunicorn server
-echo "Starting Gunicorn server..."
-exec gunicorn my_webapp.wsgi:application
+echo "🚀 Starting server..."
+gunicorn my_webapp.wsgi:application --bind 0.0.0.0:$PORT
