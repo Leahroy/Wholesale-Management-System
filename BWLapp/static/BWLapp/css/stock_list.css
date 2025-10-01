@@ -152,6 +152,30 @@ h1 {
     font-style: italic;
     color: #888;
 }
+/* --- Dashboard Button Styling (Inline for immediate use) --- */
+    .dashboard-link-wrapper {
+        margin-top: 30px;
+        text-align: right; /* Aligns the button to the far right */
+    }
+
+    .back-to-dashboard-btn {
+        display: inline-flex;
+        align-items: right;
+        padding: 12px 15px; /* Reduced padding for compact icon-only button */
+        background-color: #4F46E5; /* Indigo color */
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: background-color 0.3s ease, transform 0.1s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Removed icon margin-right rule as the button is now icon-only */
+    .back-to-dashboard-btn:hover {
+        background-color: #4338CA; /* Darker indigo on hover */
+        transform: translateY(-1px);
+    }
 
 /* Responsive Design */
 @media (max-width: 768px) {

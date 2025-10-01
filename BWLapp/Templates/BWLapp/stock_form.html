@@ -6,10 +6,29 @@
     <title>{% if form.instance.pk %}Edit Stock{% else %}Add New Stock{% endif %}</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'BWLapp/css/stock_form.css' %}">
+    <style>
+        .autofill-btn {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            transition: 0.3s;
+        }
+        .autofill-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
 <div class="form-container">
     <h1 class="form-title">{% if form.instance.pk %}Edit Stock{% else %}Add Stock{% endif %}</h1>
+
+    <!-- ✅ Autofill Button -->
+    <button type="button" class="autofill-btn" onclick="autofillStock()">⚡ Autofill Sample Stock</button>
 
     <form method="post" novalidate>
         {% csrf_token %}
@@ -53,11 +72,32 @@
                 <div class="form-error">{{ form.is_available.errors }}</div>
             {% endif %}
         </div>
+
         <div class="form-actions">
             <button type="submit" class="btn btn-success">💾 Save</button>
             <a href="{% url 'stock-list' %}" class="btn btn-secondary">❌ Cancel</a>
         </div>
     </form>
 </div>
+
+<script>
+    // ✅ Autofill Demo Data for Stock Form
+    function autofillStock() {
+        const productField = document.getElementById("id_product");
+        const packageField = document.getElementById("id_package_type");
+        const quantityField = document.getElementById("id_quantity");
+        const priceField = document.getElementById("id_price_per_package");
+        const availableField = document.getElementById("id_is_available");
+
+        // Select product with id=5 (Lipton)
+        if (productField) productField.value = "5";
+
+        // Fill other fields
+        if (packageField) packageField.value = "Carton";
+        if (quantityField) quantityField.value = "12";
+        if (priceField) priceField.value = "42"; // You didn't specify a price, so leaving it blank
+        if (availableField) availableField.checked = true;
+    }
+</script>
 </body>
 </html>

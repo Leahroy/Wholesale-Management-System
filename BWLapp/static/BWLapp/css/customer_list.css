@@ -158,6 +158,34 @@ body {
     font-style: italic;
     color: #888;
 }
+/* --- Dashboard Button Styling --- */
+.dashboard-link-wrapper {
+    margin-top: 30px;
+    text-align: right; /* Aligns the button to the far right */
+}
+
+.back-to-dashboard-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 25px;
+    background-color: #6b8bf5; /* Example: Indigo color for primary action */
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 100px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.back-to-dashboard-btn i {
+    margin-right: 6px;
+}
+
+.back-to-dashboard-btn:hover {
+    background-color: #4338CA; /* Darker indigo on hover */
+    transform: translateY(-1px);
+}
+
 
 /* Responsive Design*/
 @media (max-width: 768px) {

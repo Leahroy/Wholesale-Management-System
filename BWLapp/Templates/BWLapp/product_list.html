@@ -30,6 +30,31 @@
         display: block;
         margin: 0 auto;
     }
+    
+    /* --- Dashboard Button Styling (Inline for immediate use) --- */
+    .dashboard-link-wrapper {
+        margin-top: 30px;
+        text-align: right; /* Aligns the button to the far right */
+    }
+
+    .back-to-dashboard-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 12px 15px; /* Reduced padding for compact icon-only button */
+        background-color: #4F46E5; /* Indigo color */
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: background-color 0.3s ease, transform 0.1s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Removed icon margin-right rule as the button is now icon-only */
+    .back-to-dashboard-btn:hover {
+        background-color: #4338CA; /* Darker indigo on hover */
+        transform: translateY(-1px);
+    }
 </style>
 </head>
 <body>
@@ -86,13 +111,16 @@
                 </td>
                 {% endif %}
             </tr>
-            {% empty %}
-            <tr>
-                <td colspan="{% if is_admin %}8{% else %}7{% endif %}" class="no-products-found">No products found.</td>
-            </tr>
             {% endfor %}
         </tbody>
     </table>
+</div>
+
+<!-- Back to Admin Dashboard Link -->
+<div class="dashboard-link-wrapper">
+    <a href="{% url 'admin_dashboard' %}" class="back-to-dashboard-btn">
+        <i class="fas fa-arrow-left" style="margin-left: 4px;"></i><i class="fas fa-home"></i> 
+    </a>
 </div>
 
 </div>

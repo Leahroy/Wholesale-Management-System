@@ -6,10 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create New Order</title>
     <link rel="stylesheet" href="{% static 'BWLapp/css/order_formset.css' %}">
+    <style>
+        .autofill-btn {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+        .autofill-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <div class="form-container">
         <h1>Create New Order</h1>
+
+        <!-- ✅ Autofill Button -->
+        <button type="button" class="autofill-btn" onclick="autofillOrder()">⚡ Autofill Sample Order</button>
 
         <form method="post">
             {% csrf_token %}
@@ -67,10 +86,34 @@
             </div>
 
             <div class="form-actions">
-                <button type="submit" class="button button-primary">Save Order</button>
-                <a href="{% url 'order-list' %}" class="button button-secondary">Cancel</a>
+                <button type="submit" class="button button-primary">💾 Save Order</button>
+                <a href="{% url 'order-list' %}" class="button button-secondary">❌ Cancel</a>
             </div>
         </form>
     </div>
+
+<script>
+    // ✅ Autofill Sample Order Data
+    function autofillOrder() {
+        // 1️⃣ Main Order Details (adjust field IDs if different)
+        const customerField = document.getElementById("id_customer");
+        const dateField = document.getElementById("id_order_date");
+        const statusField = document.getElementById("id_status");
+
+        if (customerField) customerField.value = customerField.options[10]?.value || "";
+        if (dateField) {
+            const today = new Date().toISOString().split('T')[0];
+            dateField.value = today;
+        }
+        if (statusField) statusField.value = "payed";
+
+        // 2️⃣ First Order Item (first row of formset)
+        const stockItemField = document.getElementById("id_form-0-stock_item");
+        const quantityField = document.getElementById("id_form-0-quantity");
+
+        if (stockItemField) stockItemField.value = stockItemField.options[6]?.value || "";
+        if (quantityField) quantityField.value = "12";
+    }
+</script>
 </body>
 </html>

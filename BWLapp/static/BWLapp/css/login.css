@@ -40,7 +40,7 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    background-image: url('/static/images/login.jpg');
+    background-image: url('/static/images/atoll.png');
 }
 
 .welcome-heading {
